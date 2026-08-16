@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Privacy Policy"
+  description="What each tool at devtoolbench.dev does with your data: password checks are hashed locally, speed test URLs go through our serverless proxy, and the data generator is 100% local. No accounts, no personal data collection, no database."
+  path="/privacy-policy"
+>
+  <article class="policy">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: August 2026</p>
+
+    <p>
+      DevToolbench (devtoolbench.dev) has no accounts, no login, and no first-party data
+      storage — there is no database. Below is exactly what each tool does with what you
+      type into it, tool by tool.
+    </p>
+
+    <h2>Breach Checker</h2>
+    <h3>Password check</h3>
+    <p>
+      Your password is hashed locally in your browser using SHA-1. Only the first
+      <strong>5 characters of that hash</strong> are ever sent over the network — to the
+      HaveIBeenPwned Pwned Passwords API. This technique is called
+      <em>k-anonymity</em>: the API returns the list of all hash suffixes that share your
+      5-character prefix, and your browser matches the rest locally. The full password and the
+      full hash never leave your device.
+    </p>
+    <h3>Email check</h3>
+    <p>
+      Unlike the password check, your email address <strong>is</strong> sent to the
+      XposedOrNot API over HTTPS to run the breach lookup. That is the only way this check can
+      work. If you're not comfortable with that, don't use the email check.
+    </p>
+
+    <h2>Speed Test</h2>
+    <p>
+      The URLs you enter are sent to this site's own serverless function (on Cloudflare
+      Pages), which forwards them to Google's PageSpeed Insights API to run the audit. We
+      store nothing; the URLs are processed in memory and discarded. Google's API receives
+      your URLs as part of running the test.
+    </p>
+
+    <h2>Fake Data Generator</h2>
+    <p>
+      100% local. Nothing you configure or generate is ever sent anywhere. All data is
+      produced in your browser by an open-source library bundled at build time — there is no
+      runtime call to any third party.
+    </p>
+
+    <h2>Analytics</h2>
+    <p>
+      We use <a href="https://clarity.microsoft.com" rel="noopener nofollow" target="_blank">Microsoft Clarity</a>,
+      a free, <strong>cookieless</strong> analytics tool, to understand how the tools are
+      used — which pages people reach, where they scroll, and where they get stuck.
+      Clarity sets no cookies, stores no personal data, and masks all form inputs by
+      default, so anything typed into the breach checker (including passwords) is never
+      recorded. Session data is aggregated and anonymous. If you prefer to opt out,
+      blocking third-party scripts in your browser also disables Clarity.
+    </p>
+
+    <h2>Advertising</h2>
+    <p>
+      The site is ad-supported. Ad slots may be filled by third-party ad networks, which set
+      their own cookies subject to their own policies. This site itself sets no cookies —
+      the only first-party analytics is the cookieless Microsoft Clarity described above.
+    </p>
+
+    <p>Questions? Open an issue on the site's GitHub repository.</p>
+  </article>
+
+  <style>
+    .policy { max-width: 46rem; padding: 2rem 0; }
+    .policy h1 { font-size: 1.75rem; margin: 0 0 0.25rem; }
+    .updated { color: var(--text-dim); font-size: 0.875rem; margin-top: 0; }
+    .policy h2 { font-size: 1.25rem; margin-top: 2rem; color: var(--good); }
+    .policy h3 { font-size: 1rem; margin-top: 1.25rem; }
+    .policy p { color: var(--text-dim); }
+    .policy strong { color: var(--text); }
+  </style>
+</Layout>

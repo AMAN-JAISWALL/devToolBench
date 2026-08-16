@@ -1,0 +1,113 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="About DevToolbench — Free Online Developer Tools"
+  description="Learn about DevToolbench: who built it, why it's free, and how we approach privacy, transparency, and open-source developer tools."
+  path="/about"
+  keywords={[
+    'about devtoolbench',
+    'free developer tools',
+    'online dev tools about',
+  ]}
+>
+  <article class="page-content">
+    <h1>About DevToolbench</h1>
+    <p class="lead">
+      DevToolbench is a small, focused collection of <strong>free online developer tools</strong>
+      built for engineers, designers, and QA teams who need quick, reliable utilities without the
+      overhead of signing up, managing subscriptions, or trusting black-box SaaS products with
+      their test data and credentials.
+    </p>
+
+    <h2>What we built</h2>
+    <p>
+      Three tools, each solving a specific problem developers encounter regularly:
+    </p>
+    <ul>
+      <li>
+        <strong><a href="/breach-checker">Password &amp; email breach checker</a></strong> —
+        find out if your credentials have appeared in known data breaches. Passwords are hashed
+        locally (k-anonymity via HaveIBeenPwned); email addresses are checked against
+        XposedOrNot with full transparency about what's sent and where.
+      </li>
+      <li>
+        <strong><a href="/speed-test">Bulk website speed test</a></strong> — audit up to 10
+        websites in a single batch using Google PageSpeed data. Performance scores, Core Web
+        Vitals (LCP, CLS, TBT), and top-priority optimization suggestions per URL, with
+        per-row error handling so one failure doesn't break the batch.
+      </li>
+      <li>
+        <strong><a href="/fake-data-generator">Fake data generator</a></strong> — create up to
+        1,000 rows of realistic mock data across 14 field types, exported as JSON, CSV, or SQL
+        INSERT statements. Runs 100% in your browser with zero network requests after the page
+        loads.
+      </li>
+    </ul>
+
+    <h2>Why it's free</h2>
+    <p>
+      Every tool runs on free public APIs and open-source libraries. Hosting is on Cloudflare's
+      free tier, so operating costs are minimal. The site is <strong>ad-supported</strong> —
+      unobtrusive ads cover infrastructure costs, and that's the entire business model. There
+      is no premium tier, no feature paywall, and no plan to add one.
+    </p>
+    <p>
+      We believe developer utilities shouldn't require a credit card. Free tools lower the
+      barrier for freelancers, bootcamp students, open-source maintainers, and anyone doing
+      honest work who doesn't have a company expense account for subscription tooling.
+    </p>
+
+    <h2>Our approach to privacy</h2>
+    <p>
+      Transparency isn't a marketing angle for us — it's a design constraint. Every tool page
+      explains in plain language exactly what data is sent where:
+    </p>
+    <ul>
+      <li>The <a href="/breach-checker">breach checker</a> hashes your password locally; only a
+        5-character hash prefix reaches the network.</li>
+      <li>The email check sends your address to XposedOrNot over HTTPS — and we say so
+        explicitly instead of implying it's fully local.</li>
+      <li>The <a href="/speed-test">speed test</a> forwards URLs to our serverless proxy,
+        which calls Google's PageSpeed API — the URL is stored in memory, not in a database.</li>
+      <li>The <a href="/fake-data-generator">data generator</a> runs entirely client-side.
+        Nothing you configure or generate is ever sent anywhere.</li>
+    </ul>
+    <p>
+      There is no account system, no login, no cookies, and no database. Our only
+      analytics is Microsoft Clarity — cookieless and anonymous, with every form input
+      masked — used solely to understand how the tools are used. Read the full breakdown
+      in the <a href="/privacy-policy">privacy policy</a>.
+    </p>
+
+    <h2>The technology</h2>
+    <p>
+      The site is built with <strong>Astro</strong>, deployed as static HTML on
+      <strong>Cloudflare Pages</strong> with a tiny serverless function for the speed test's
+      API proxy. There is no React, Vue, or Svelte runtime — pages are plain HTML with
+      scoped CSS and lean client-side JavaScript. The fake data generator bundles
+      <strong>@faker-js/faker</strong> at build time, and the breach checker uses the browser's
+      native Web Crypto API. The entire site ships fast, works offline-capable for two of the
+      three tools, and respects <code>prefers-reduced-motion</code>.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Found a bug, have a suggestion, or want to report a security concern? Reach out through
+      the <a href="/contact">contact page</a>. We read everything and respond when we can.
+    </p>
+  </article>
+
+  <style>
+    .page-content { max-width: 46rem; padding: 2rem 0; }
+    .page-content h1 { font-size: 1.75rem; margin: 0 0 0.75rem; }
+    .page-content .lead { color: var(--text-dim); font-size: 1rem; max-width: 42rem; }
+    .page-content h2 { font-size: 1.25rem; margin-top: 2rem; color: var(--good); }
+    .page-content p { color: var(--text-dim); font-size: 0.9375rem; }
+    .page-content ul { color: var(--text-dim); font-size: 0.9375rem; }
+    .page-content li { margin-bottom: 0.5rem; }
+    .page-content li strong { color: var(--text); }
+    .page-content code { color: var(--good); font-size: 0.875em; }
+  </style>
+</Layout>

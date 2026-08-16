@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Internal Server Error (500) | DevToolbench</title>
+    <meta name="description" content="Something went wrong on our end. Try again in a moment, or head back to the DevToolbench homepage." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <meta name="theme-color" content="#0d1522" />
+    <!--
+      Self-contained by design: Cloudflare Pages serves this file when a Pages
+      Function throws, so it must not depend on shared CSS/JS that could be
+      part of the failure. Branding is inlined below.
+    -->
+    <style>
+      :root {
+        --bg: #0d1522;
+        --bg-input: #0a111d;
+        --border: #26344b;
+        --text: #dce4f0;
+        --text-dim: #8fa1b8;
+        --good: #2dd4bf;
+        --warn: #fbbf24;
+        --mono: ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+        --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      a { color: var(--good); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      header {
+        border-bottom: 1px solid var(--border);
+        padding: 0.85rem 1rem;
+      }
+      .brand {
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 1.125rem;
+        color: var(--text);
+        max-width: 60rem;
+        margin: 0 auto;
+        display: block;
+      }
+      .brand:hover { text-decoration: none; }
+      .brand .accent { color: var(--good); }
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 3rem 1rem;
+        gap: 0.75rem;
+      }
+      .code {
+        font-family: var(--mono);
+        font-size: clamp(4rem, 14vw, 6.5rem);
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+        color: var(--warn);
+        text-shadow: 0 0 40px rgba(251, 191, 36, 0.2);
+      }
+      h1 { font-size: 1.5rem; margin: 0; }
+      .message { color: var(--text-dim); margin: 0; max-width: 34rem; }
+      .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 1rem; }
+      .btn {
+        display: inline-block;
+        padding: 0.625rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid var(--good);
+      }
+      .btn-primary { background: var(--good); color: #04211d; }
+      .btn-primary:hover { text-decoration: none; filter: brightness(1.1); }
+      .btn-secondary { background: transparent; color: var(--good); font-family: var(--sans); }
+      .btn-secondary:hover { background: rgba(45, 212, 191, 0.08); }
+      .tools { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); width: min(28rem, 100%); }
+      .tools p {
+        font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.05em;
+        color: var(--text-dim); margin: 0 0 0.75rem;
+      }
+      .tools ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 1.25rem 1rem;
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 0.8125rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/">dev<span class="accent">toolbench</span></a>
+    </header>
+
+    <main>
+      <p class="code" aria-hidden="true">500</p>
+      <h1>Internal server error</h1>
+      <p class="message">
+        Something went wrong on our side while processing the request. It's not
+        you, and it's usually temporary — try again in a moment.
+      </p>
+
+      <div class="actions">
+        <button type="button" class="btn btn-secondary" id="back-btn">← Back to previous page</button>
+        <a class="btn btn-primary" href="/">Go to homepage</a>
+      </div>
+
+      <div class="tools">
+        <p>These work right now:</p>
+        <ul>
+          <li><a href="/breach-checker">Password &amp; email breach checker</a></li>
+          <li><a href="/speed-test">Bulk website speed test</a></li>
+          <li><a href="/fake-data-generator">Fake data generator</a></li>
+        </ul>
+      </div>
+    </main>
+
+    <footer>devtoolbench.dev — built on free public APIs. No accounts, no tracking.</footer>
+
+    <script>
+      document.getElementById('back-btn').addEventListener('click', function () {
+        if (history.length > 1 && document.referrer !== '') {
+          history.back();
+        } else {
+          window.location.href = '/';
+        }
+      });
+    </script>
+  </body>
+</html>

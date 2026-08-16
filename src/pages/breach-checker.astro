@@ -1,0 +1,531 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Free Password Breach Checker — Check If Your Email Was Hacked"
+  description="Free password breach checker: check if your password appears in known data breaches (hashed locally, never sent) and check if your email was hacked or leaked. HaveIBeenPwned-style check, no login."
+  keywords={[
+    'password breach checker',
+    'check if my email was hacked',
+    'free password breach checker',
+    'have i been pwned check',
+    'pwned password check',
+    'email breach check',
+    'data breach lookup',
+    'leaked password checker',
+    'is my password compromised',
+  ]}
+  path="/breach-checker"
+>
+  <section class="intro">
+    <h1>Free Password &amp; Email Breach Checker</h1>
+    <p>
+      Check if your password has appeared in known data breaches and whether your email was
+      hacked or leaked. Two checks, two different privacy models — both explained honestly
+      below.
+    </p>
+  </section>
+
+  <!-- ============ FEATURE 1: Password check ============ -->
+  <section class="tool" aria-labelledby="pw-heading">
+    <h2 id="pw-heading">1. Password check</h2>
+    <p class="privacy-note good">
+      Your password is hashed in your browser. Only the first 5 characters of the hash leave
+      your device — the password itself never touches the network.
+    </p>
+
+    <div class="live-hash" aria-live="polite">
+      <span class="label mono">SHA-1 (live)</span>
+      <code id="live-hash" class="mono">&nbsp;</code>
+    </div>
+
+    <form id="pw-form">
+      <label class="field-label" for="pw-input">Password to check</label>
+      <div class="row">
+        <input
+          id="pw-input"
+          type="password"
+          autocomplete="off"
+          placeholder="Type or paste a password…"
+          required
+        />
+        <button type="submit">Check password</button>
+      </div>
+    </form>
+
+    <div id="pw-result" class="result" role="status" aria-live="polite"></div>
+
+    <details class="how">
+      <summary>How this works (k-anonymity)</summary>
+      <p>
+        When you submit, your browser computes the password's SHA-1 hash locally using the
+        Web Crypto API. It then sends only the first 5 hash characters to the
+        HaveIBeenPwned Pwned Passwords API, which replies with every breached-hash suffix
+        sharing that prefix. Your browser matches the rest of your hash against that list
+        locally. The API never learns your password or your full hash.
+      </p>
+    </details>
+  </section>
+
+  <!-- ============ FEATURE 2: Email check ============ -->
+  <section class="tool" aria-labelledby="email-heading">
+    <h2 id="email-heading">2. Email check</h2>
+    <p class="privacy-note warn">
+      Unlike the password check, your email address <strong>is</strong> sent over HTTPS to
+      the XposedOrNot API to run this lookup. That's how the check works — we won't claim
+      otherwise.
+    </p>
+
+    <form id="email-form">
+      <label class="field-label" for="email-input">Email to check</label>
+      <div class="row">
+        <input
+          id="email-input"
+          type="email"
+          autocomplete="off"
+          placeholder="you@example.com"
+          required
+        />
+        <button type="submit">Check email</button>
+      </div>
+    </form>
+
+    <div id="email-result" class="result" role="status" aria-live="polite"></div>
+
+    <p class="data-credit">
+      Breach data:
+      <a href="https://xposedornot.com" rel="noopener nofollow" target="_blank">XposedOrNot</a> (email check) &
+      <a href="https://haveibeenpwned.com" rel="noopener nofollow" target="_blank">HaveIBeenPwned</a> (password check)
+    </p>
+  </section>
+
+  <!-- Ad slot: in-content — paste your AdSense unit here after approval -->
+  <div class="ad-slot" data-ad-slot="in-content"></div>
+
+  <!-- ============ SEO content ============ -->
+  <section class="explainer">
+    <h2>What is a data breach, and why should you care?</h2>
+    <p>
+      A data breach happens when information is taken from a system without permission —
+      usually a company's user database being hacked and leaked online. Breaches have
+      exposed billions of accounts over the past decade: email addresses, passwords
+      (often poorly hashed or in plain text), names, phone numbers, and sometimes payment
+      details. Once your credentials appear in a breach, they get added to lists that
+      attackers use for credential stuffing — automatically trying your leaked email and
+      password combination on hundreds of other sites.
+    </p>
+    <p>
+      This tool checks your exposure two ways. The <strong>password check</strong> compares
+      the SHA-1 hash of your password against the HaveIBeenPwned Pwned Passwords corpus of
+      over 600 million passwords collected from real breaches. The <strong>email check</strong>
+      asks XposedOrNot which known breach databases contain your email address, so you can
+      see exactly which services leaked your data and change those passwords first.
+    </p>
+    <p>
+      The password check is designed around a privacy technique called k-anonymity: your
+      browser hashes the password, sends only a 5-character prefix of that hash, and matches
+      the remainder locally against the API's response. Because thousands of hashes share
+      any given prefix, the API can't determine which password you checked. Your password
+      never leaves your browser — that's not marketing copy, it's how the code works, and
+      you can verify it in your browser's network tab: you'll see a request to
+      <code>api.pwnedpasswords.com/range/XXXXX</code> and nothing containing your password.
+    </p>
+    <p>
+      One honest caveat: these checks only cover <em>known</em> breaches. A "not found"
+      result means your password or email isn't in the public datasets these APIs index —
+      it is not a guarantee you're safe. Use unique passwords per site and a password
+      manager regardless of what this tool reports.
+    </p>
+
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details>
+        <summary>Is it safe to type my real password here?</summary>
+        <p>
+          The password is hashed (SHA-1) in your browser before anything is sent, and only a
+          5-character hash prefix goes to the API. The API sees a prefix shared by hundreds
+          of hashes and returns all matches; your browser picks out yours locally. Still,
+          if you're cautious, test a password you're considering rather than your master
+          password — healthy skepticism is good security hygiene.
+        </p>
+      </details>
+      <details>
+        <summary>What does "found in X breaches" actually mean?</summary>
+        <p>
+          It means that exact password has appeared X times across the breach databases
+          HaveIBeenPwned has collected. A higher count means the password is more widely
+          known and more likely to be tried by attackers in automated attacks. Any count
+          above zero is a reason to stop using that password.
+        </p>
+      </details>
+      <details>
+        <summary>Why does the email check send my email to a server?</summary>
+        <p>
+          Checking whether your address appears in breach lists requires searching those
+          lists, and there's no k-anonymity trick available for exact email lookup. Your
+          address is sent over HTTPS to XposedOrNot, which runs the check. If that's not
+          acceptable to you, skip the email check.
+        </p>
+      </details>
+      <details>
+        <summary>My email shows a breach for a service I never used. How?</summary>
+        <p>
+          Breach databases often contain emails collected from aggregated spam lists,
+          combo lists, or third-party leaks, not just the affected service's own records.
+          Your address may have been included without you having an account. Treat it as a
+          signal that the address is circulating, and make sure you're not reusing passwords.
+        </p>
+      </details>
+      <details>
+        <summary>What should I do if my email appears in breaches?</summary>
+        <p>
+          Change the password on every listed service (and anywhere you reused it), enable
+          two-factor authentication, and consider a password manager so every account gets a
+          unique password. Do this for the breached services first — they're the known
+          exposure points.
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Is it safe to type my real password here?',
+        acceptedAnswer: { '@type': 'Answer', text: 'The password is hashed (SHA-1) in your browser before anything is sent, and only a 5-character hash prefix goes to the API. The API sees a prefix shared by hundreds of hashes and returns all matches; your browser picks out yours locally.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'What does "found in X breaches" actually mean?',
+        acceptedAnswer: { '@type': 'Answer', text: 'That exact password has appeared X times across the breach databases HaveIBeenPwned has collected. Any count above zero is a reason to stop using that password.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'Why does the email check send my email to a server?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Checking whether your address appears in breach lists requires searching those lists, and there is no k-anonymity trick available for exact email lookup. Your address is sent over HTTPS to XposedOrNot, which runs the check.' },
+      },
+      {
+        '@type': 'Question',
+        name: "My email shows a breach for a service I never used. How?",
+        acceptedAnswer: { '@type': 'Answer', text: 'Breach databases often contain emails collected from aggregated spam lists, combo lists, or third-party leaks, not just the affected service. Treat it as a signal that the address is circulating.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'What should I do if my email appears in breaches?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Change the password on every listed service and anywhere you reused it, enable two-factor authentication, and consider a password manager.' },
+      },
+    ],
+  })} />
+
+  <script>
+    // ---------- Feature 1: password check ----------
+    const pwForm = document.getElementById('pw-form') as HTMLFormElement;
+    const pwInput = document.getElementById('pw-input') as HTMLInputElement;
+    const pwResult = document.getElementById('pw-result')!;
+    const liveHashEl = document.getElementById('live-hash')!;
+
+    async function sha1Hex(text: string): Promise<string> {
+      const data = new TextEncoder().encode(text);
+      const digest = await crypto.subtle.digest('SHA-1', data);
+      return Array.from(new Uint8Array(digest))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('')
+        .toUpperCase();
+    }
+
+    // Signature moment: live hash updates as you type, proving the tool hashes locally.
+    let hashTimer: ReturnType<typeof setTimeout> | undefined;
+    pwInput.addEventListener('input', () => {
+      clearTimeout(hashTimer);
+      hashTimer = setTimeout(async () => {
+        liveHashEl.textContent = pwInput.value
+          ? await sha1Hex(pwInput.value)
+          : '\u00a0';
+      }, 80);
+    });
+
+    pwForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = pwInput.value;
+      if (!password) return;
+      pwResult.className = 'result info';
+      pwResult.textContent = 'Hashing locally and querying…';
+
+      try {
+        const hash = await sha1Hex(password);
+        const prefix = hash.slice(0, 5);
+        const suffix = hash.slice(5);
+
+        const res = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`, {
+          headers: { 'Add-Padding': 'true' },
+        });
+        if (!res.ok) throw new Error(`API returned ${res.status}`);
+
+        const body = await res.text();
+        let count = 0;
+        for (const line of body.split('\n')) {
+          const sep = line.indexOf(':');
+          if (sep === -1) continue;
+          if (line.slice(0, sep).trim() === suffix) {
+            count = parseInt(line.slice(sep + 1).trim(), 10) || 0;
+            break;
+          }
+        }
+
+        if (count > 0) {
+          pwResult.className = 'result bad';
+          pwResult.textContent = `Found in ${count.toLocaleString()} known breach entries — avoid using this password.`;
+        } else {
+          pwResult.className = 'result good';
+          pwResult.textContent =
+            'Not found in known breach data. Note: this only covers known, public breach lists — it is not a guarantee of safety.';
+        }
+      } catch {
+        pwResult.className = 'result info';
+        pwResult.textContent = 'Could not reach the breach API. Please try again in a moment.';
+      }
+    });
+
+    // ---------- Feature 2: email check ----------
+    const emailForm = document.getElementById('email-form') as HTMLFormElement;
+    const emailInput = document.getElementById('email-input') as HTMLInputElement;
+    const emailResult = document.getElementById('email-result')!;
+    const emailBtn = emailForm.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    // XposedOrNot free tier: ~2 req/s, 50–100/hour per client. One in-flight
+    // guard + result cache keeps a single visitor far below that; a 429 puts
+    // the button on a 30s cooldown instead of letting the user hammer it.
+    let emailBusy = false;
+    const CACHE_TTL = 10 * 60 * 1000;
+    function cacheGet(email: string): { cls: string; html: string } | null {
+      try {
+        const raw = sessionStorage.getItem(`xon-${email}`);
+        if (!raw) return null;
+        const { t, cls, html } = JSON.parse(raw);
+        return Date.now() - t < CACHE_TTL ? { cls, html } : null;
+      } catch { return null; }
+    }
+    function cacheSet(email: string, cls: string, html: string): void {
+      try { sessionStorage.setItem(`xon-${email}`, JSON.stringify({ t: Date.now(), cls, html })); } catch { /* private mode */ }
+    }
+    function startCooldown(seconds: number): void {
+      let left = seconds;
+      emailBtn.disabled = true;
+      const original = emailBtn.textContent;
+      const iv = setInterval(() => {
+        left--;
+        if (left <= 0) {
+          clearInterval(iv);
+          emailBtn.disabled = false;
+          emailBtn.textContent = original;
+        } else {
+          emailBtn.textContent = `Retry in ${left}s`;
+        }
+      }, 1000);
+    }
+
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (emailBusy || emailBtn.disabled) return;
+      const email = emailInput.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailResult.className = 'result info';
+        emailResult.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      const cached = cacheGet(email);
+      if (cached) {
+        emailResult.className = cached.cls;
+        emailResult.innerHTML = cached.html;
+        return;
+      }
+
+      emailBusy = true;
+      emailBtn.disabled = true;
+      emailResult.className = 'result info';
+      emailResult.textContent = 'Checking breach databases…';
+
+      try {
+        const res = await fetch(
+          `https://api.xposedornot.com/v1/check-email/${encodeURIComponent(email)}`
+        );
+        if (res.status === 429) {
+          emailResult.className = 'result info';
+          emailResult.textContent =
+            'Rate limit reached — the free breach API allows roughly 2 checks/second and 50–100 per hour. The button re-enables in 30 seconds; re-checking the same email is instant for 10 minutes.';
+          startCooldown(30);
+          return;
+        }
+        if (!res.ok) throw new Error(`API returned ${res.status}`);
+        const data = await res.json();
+
+        if (data?.Error || !data?.breaches) {
+          emailResult.className = 'result good';
+          emailResult.innerHTML = 'No known breaches found for this email address.';
+          cacheSet(email, 'result good', emailResult.innerHTML);
+          return;
+        }
+
+        // XposedOrNot returns breaches as [[name, name, ...]]
+        const names: string[] = Array.isArray(data.breaches?.[0])
+          ? data.breaches[0]
+          : data.breaches;
+        if (!Array.isArray(names) || names.length === 0) {
+          emailResult.className = 'result good';
+          emailResult.innerHTML = 'No known breaches found for this email address.';
+          cacheSet(email, 'result good', emailResult.innerHTML);
+          return;
+        }
+
+        emailResult.className = 'result bad';
+        emailResult.innerHTML = `
+          <p><strong>Found in ${names.length} known breach${names.length === 1 ? '' : 'es'}:</strong></p>
+          <ul>${names.map((n) => `<li class="mono">${escapeHtml(String(n))}</li>`).join('')}</ul>
+          <p class="advice">Change the password for each listed service — and anywhere you reused it — then enable two-factor authentication.</p>
+        `;
+        cacheSet(email, 'result bad', emailResult.innerHTML);
+      } catch {
+        emailResult.className = 'result info';
+        emailResult.textContent = 'Could not reach the breach API. Please try again in a moment.';
+      } finally {
+        emailBusy = false;
+        if (!emailBtn.textContent?.startsWith('Retry')) emailBtn.disabled = false;
+      }
+    });
+
+    function escapeHtml(s: string): string {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+  </script>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Password & Email Breach Checker',
+    url: 'https://devtoolbench.dev/breach-checker',
+    applicationCategory: 'SecurityApplication',
+    operatingSystem: 'Any (web browser)',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description: 'Free password breach checker and email breach lookup. Passwords are hashed locally in the browser; only a 5-character hash prefix is ever sent (k-anonymity).',
+  })} />
+
+  <aside class="related">
+    <h2>More free tools from DevToolbench</h2>
+    <ul>
+      <li><a href="/speed-test">Bulk website speed test — test multiple websites at once</a></li>
+      <li><a href="/fake-data-generator">Fake data generator — mock JSON, CSV &amp; SQL test data</a></li>
+    </ul>
+  </aside>
+
+  <style>
+    .related { max-width: 46rem; margin: 0 0 2rem; padding: 1rem 1.25rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; }
+    .related h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+    .related ul { margin: 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .related li { margin: 0.25rem 0; }
+
+    .intro { padding: 2rem 0 0.5rem; }
+    .intro h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .intro p { color: var(--text-dim); max-width: 44rem; margin: 0; }
+
+    .tool {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .tool h2 { margin: 0 0 0.75rem; font-size: 1.25rem; }
+    .privacy-note {
+      font-size: 0.875rem;
+      border-radius: 6px;
+      padding: 0.625rem 0.875rem;
+      margin: 0 0 1rem;
+    }
+    .privacy-note.good { color: var(--good); background: rgba(45, 212, 191, 0.08); }
+    .privacy-note.warn { color: var(--warn); background: rgba(251, 191, 36, 0.08); }
+
+    .live-hash {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 1rem;
+      padding: 0.625rem 0.875rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .live-hash .label { font-size: 0.6875rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+    .live-hash code { font-size: 0.8125rem; word-break: break-all; color: var(--good); min-height: 1.2em; }
+
+    .field-label { display: block; font-size: 0.875rem; margin-bottom: 0.375rem; color: var(--text-dim); }
+    .row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .row input {
+      flex: 1 1 14rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.625rem 0.875rem;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.9375rem;
+    }
+    .row button {
+      background: var(--good);
+      color: #04211d;
+      border: none;
+      border-radius: 6px;
+      padding: 0.625rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      cursor: pointer;
+    }
+    .row button:hover { filter: brightness(1.1); }
+
+    .result {
+      margin-top: 1rem;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-size: 0.9375rem;
+      empty-cells: hide;
+    }
+    .result:empty { display: none; }
+    .result.good { color: var(--good); background: rgba(45, 212, 191, 0.08); }
+    .result.bad { color: var(--bad); background: rgba(248, 113, 113, 0.08); }
+    .result.info { color: var(--text-dim); background: var(--bg-input); }
+    .result ul { margin: 0.5rem 0; padding-left: 1.25rem; }
+    .result .advice { color: var(--warn); margin-bottom: 0; font-size: 0.875rem; }
+
+    details { margin-top: 1rem; }
+    details summary { cursor: pointer; color: var(--text-dim); font-size: 0.875rem; }
+    details p { color: var(--text-dim); font-size: 0.875rem; }
+    .data-credit {
+      margin: 1rem 0 0;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      opacity: 0.75;
+      border-top: 1px solid var(--border);
+      padding-top: 0.75rem;
+    }
+
+    .explainer { max-width: 46rem; padding: 1rem 0 2rem; }
+    .explainer h2 { font-size: 1.25rem; margin-top: 2rem; }
+    .explainer p, .faq p { color: var(--text-dim); font-size: 0.9375rem; }
+    .explainer code { color: var(--good); font-size: 0.875em; }
+    .faq details {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-top: 0.5rem;
+    }
+    .faq summary { font-weight: 600; }
+    .faq summary::marker { color: var(--good); }
+  </style>
+</Layout>

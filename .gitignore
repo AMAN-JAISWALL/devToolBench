@@ -1,0 +1,25 @@
+# build output
+dist/
+
+# generated astro types/cache (regenerated on build)
+.astro/
+
+# wrangler local state, caches, and temp bundles
+.wrangler/
+
+# dependencies
+node_modules/
+
+# local Cloudflare Pages function vars (contains API key — never commit)
+.dev.vars
+
+# environment
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# logs
+npm-debug.log*

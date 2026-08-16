@@ -1,0 +1,20 @@
+{
+  "name": "dev-toolkit",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "preview:pages": "npm run build && wrangler pages dev dist"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@faker-js/faker": "^9.0.0",
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.123.0"
+  }
+}

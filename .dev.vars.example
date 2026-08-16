@@ -1,0 +1,4 @@
+# Local development vars for Cloudflare Pages Functions (wrangler pages dev).
+# Copy this file to .dev.vars and paste your real key — never commit .dev.vars.
+# Get a free key: Google Cloud Console → enable "PageSpeed Insights API" → Credentials.
+PAGESPEED_API_KEY=your_pagespeed_api_key_here

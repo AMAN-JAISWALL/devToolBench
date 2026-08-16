@@ -1,0 +1,4 @@
+# Serve the canonical sitemap at the standard /sitemap.xml location.
+# @astrojs/sitemap emits sitemap-index.xml; this 200-rewrite (not a redirect)
+# keeps one authoritative implementation while exposing the conventional URL.
+/sitemap.xml /sitemap-index.xml 200

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+# API endpoints are machine-to-machine — keep crawlers out
+Disallow: /api/
+
+Sitemap: https://devtoolbench.dev/sitemap.xml

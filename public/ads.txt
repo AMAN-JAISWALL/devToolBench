@@ -1,0 +1,7 @@
+# ads.txt — Google AdSense authorization file
+# After your AdSense account is approved:
+# 1. Copy your publisher ID from AdSense (ca-pub-XXXXXXXXXXXXXXXX)
+# 2. Uncomment the line below and replace pub-XXXXXXXXXXXXXXXX with your ID
+# 3. Redeploy — AdSense checks this file at https://devtoolbench.dev/ads.txt
+#
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

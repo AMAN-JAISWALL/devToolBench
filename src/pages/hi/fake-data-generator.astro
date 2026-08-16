@@ -1,0 +1,357 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const fields = [
+  { key: 'fullName', label: 'पूरा नाम' },
+  { key: 'email', label: 'ईमेल' },
+  { key: 'phone', label: 'फ़ोन' },
+  { key: 'street', label: 'गलकचा (सड़क पता)' },
+  { key: 'city', label: 'शहर' },
+  { key: 'country', label: 'देश' },
+  { key: 'company', label: 'कंपनी' },
+  { key: 'jobTitle', label: 'पद का नाम' },
+  { key: 'uuid', label: 'UUID' },
+  { key: 'date', label: 'तारीख़' },
+  { key: 'boolean', label: 'बूलियन' },
+  { key: 'avatar', label: 'अवतार URL' },
+  { key: 'price', label: 'कीमत' },
+  { key: 'lorem', label: 'Lorem पैराग्राफ़' },
+];
+const defaults = ['fullName', 'email', 'city', 'company'];
+---
+
+<Layout
+  title="मुफ़्त फेक डेटा जेनरेटर — मॉक JSON, CSV और SQL टेस्ट डेटा"
+  description="मुफ़्त फेक डेटा जेनरेटर: 1,000 तक रो की यथार्थ मॉक डेटा बनाएँ — नाम, ईमेल, पते, कंपनियाँ, UUID — JSON, CSV या SQL INSERT में एक्सपोर्ट करें। 100% ब्राउज़र में, Mockaroo का मुफ़्त विकल्प।"
+  path="/fake-data-generator"
+  locale="hi"
+  keywords={[
+    'फेक डेटा जेनरेटर',
+    'मॉक डेटा जेनरेटर',
+    'टेस्ट डेटा जेनरेटर',
+    'मॉक json डेटा',
+    'नकली डेटा जेनरेटर',
+    'csv मॉक डेटा',
+    'mockaroo विकल्प',
+  ]}
+>
+  <section class="intro">
+    <h1>फेक डेटा जेनरेटर — मॉक JSON, CSV और SQL</h1>
+    <p>
+      टेस्टिंग, डेमो और डेटाबेस सीडिंग के लिए मॉक डेटा। सब कुछ आपके ब्राउज़र में लोकली चलता है —
+      आपकी कॉन्फ़िगरेशन या जेनरेट किया डेटा कहीं नहीं भेजा जाता। Mockaroo का मुफ़्त विकल्प: कोई
+      पेवॉल नहीं, कोई साइन-अप नहीं, प्रति एक्सपोर्ट 1,000 रो तक।
+    </p>
+  </section>
+
+  <section class="tool">
+    <div class="controls">
+      <fieldset class="fields">
+        <legend>फ़ील्ड्स (कॉलम का क्रम = आउटपुट का क्रम)</legend>
+        <div class="checkbox-grid">
+          {fields.map((f) => (
+            <label class="check">
+              <input type="checkbox" name="field" value={f.key} checked={defaults.includes(f.key)} />
+              <span>{f.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="panel">
+        <label class="field-label" for="row-count">पंक्तियाँ (1–1000)</label>
+        <input id="row-count" type="number" min="1" max="1000" value="10" />
+
+        <fieldset>
+          <legend>आउटपुट फ़ॉर्मैट</legend>
+          <div class="format-toggle" role="radiogroup" aria-label="आउटपुट फ़ॉर्मैट">
+            <label class="check"><input type="radio" name="format" value="json" checked /><span>JSON</span></label>
+            <label class="check"><input type="radio" name="format" value="csv" /><span>CSV</span></label>
+            <label class="check"><input type="radio" name="format" value="sql" /><span>SQL</span></label>
+          </div>
+        </fieldset>
+
+        <div id="table-name-wrap" class="hidden">
+          <label class="field-label" for="table-name">SQL टेबल का नाम</label>
+          <input id="table-name" type="text" value="users" class="mono" />
+        </div>
+
+        <div class="actions">
+          <button id="copy-btn" type="button">कॉपी</button>
+          <button id="download-btn" type="button" class="primary">डाउनलोड</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-block">
+      <p class="preview-label mono">लाइव प्रीव्यू (पहली 10 पंक्तियाँ)</p>
+      <pre id="preview" class="mono" aria-live="polite"></pre>
+    </div>
+  </section>
+
+  <!-- Ad slot: in-content — paste your AdSense unit here after approval -->
+  <div class="ad-slot" data-ad-slot="in-content"></div>
+
+  <section class="explainer">
+    <h2>फेक डेटा क्यों इस्तेमाल करें?</h2>
+    <p>
+      डेवलपमेंट एनवायरनमेंट में असली यूज़र डेटा एक जोखिम है — डिबगिंग में वह लीक होता है,
+      स्क्रीनशॉट और बग रिपोर्ट में पहुँच जाता है, और GDPR कंप्लायंस जटिल कर देता है। यथार्थ मॉक
+      डेटा जेनरेट करके आप बिना किसी को उजागर किए प्रोडक्शन जैसा दिखने-व्यवहार करने वाला डेटा
+      लेकर विकास और डेमो कर सकते हैं। इसे डेटाबेस सीड करने, UI प्रोटोटाइप भरने, फ़ॉर्म-इंपोर्ट
+      स्ट्रेस-टेस्ट करने या ट्रेनिंग के लिए स्प्रेडशीट भरने में इस्तेमाल करें।
+    </p>
+    <p>
+      यह जेनरेटर पूरी तरह आपके ब्राउज़र में
+      <a href="https://fakerjs.dev" rel="noopener">Faker</a> (MIT-लाइसेंस ओपन-सोर्स लाइब्रेरी,
+      बिल्ड टाइम पर बंडल) से डेटा बनाता है। कोई API कॉल नहीं, कोई रेट लिमिट नहीं, और कोई सर्वर
+      आपकी कॉन्फ़िगरेशन नहीं देखता — होस्टेड सर्विसेज़ के उलट, पेज लोड होने के बाद यह ऑफ़लाइन भी
+      चलता है।
+    </p>
+
+    <h2>अक्सर पूछे जाने वाले प्रश्न</h2>
+    <div class="faq">
+      <details>
+        <summary>अधिकतम कितनी पंक्तियाँ बन सकती हैं?</summary>
+        <p>
+          प्रति एक्सपोर्ट 1,000। ब्राउज़र टैब में बहुत बड़ा डेटा जेनरेट करने से पेज फ्रीज़ हो
+          सकता है, इसलिए बड़े एक्सपोर्ट जानबूझकर आगे की सुविधा हैं, v1 नहीं। तब तक कई एक्सपोर्ट
+          चला सकते हैं।
+        </p>
+      </details>
+      <details>
+        <summary>कौन-सा एक्सपोर्ट फ़ॉर्मैट चुनें?</summary>
+        <p>
+          APIs और JavaScript के लिए <strong>JSON</strong>, स्प्रेडशीट और बल्क इंपोर्ट के लिए
+          <strong>CSV</strong>, और सीधे INSERT स्टेटमेंट के लिए <strong>SQL</strong> — टेबल का
+          नाम दें और कॉलम कीज आपके चुने फ़ील्ड्स से मैप होती हैं।
+        </p>
+      </details>
+      <details>
+        <summary>क्या यह डेटा कहीं सर्वर पर जाता है?</summary>
+        <p>
+          नहीं। जेनरेशन बंडल की गई लाइब्रेरी से लोकली होता है; कोई नेटवर्क रिक्वेस्ट नहीं होती।
+          कॉपी और डाउनलोड बटन भी पूरी तरह क्लाइंट-साइड हैं।
+        </p>
+      </details>
+      <details>
+        <summary>यह Mockaroo से कैसे अलग है?</summary>
+        <p>
+          Mockaroo अच्छा है पर बड़े डेटासेट और एक्स्ट्रा फ़ील्ड्स पेवॉल के पीछे हैं। यह टूल बिना
+          खाते मुफ़्त है: सभी 14 फ़ील्ड टाइप और पूरे 1,000 रो हर बार सबके लिए उपलब्ध हैं।
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'hi',
+    mainEntity: [
+      { '@type': 'Question', name: 'अधिकतम कितनी पंक्तियाँ बन सकती हैं?', acceptedAnswer: { '@type': 'Answer', text: 'प्रति एक्सपोर्ट 1,000। बड़े एक्सपोर्ट बाद की सुविधा हैं; तब तक कई एक्सपोर्ट चला सकते हैं।' } },
+      { '@type': 'Question', name: 'कौन-सा फ़ॉर्मैट चुनें?', acceptedAnswer: { '@type': 'Answer', text: 'APIs के लिए JSON, स्प्रेडशीट के लिए CSV, और सीधे INSERT स्टेटमेंट के लिए SQL।' } },
+      { '@type': 'Question', name: 'क्या डेटा सर्वर जाता है?', acceptedAnswer: { '@type': 'Answer', text: 'नहीं, सब कुछ ब्राउज़र में लोकली होता है; कोई नेटवर्क रिक्वेस्ट नहीं।' } },
+      { '@type': 'Question', name: 'Mockaroo से कैसे अलग है?', acceptedAnswer: { '@type': 'Answer', text: 'Mockaroo बड़े डेटासेट पेवॉल करता है; यह टूल बिना खाते, सभी फ़ील्ड और 1,000 रो सबके लिए मुफ़्त रखता है।' } },
+    ],
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'फेक डेटा जेनरेटर',
+    url: 'https://devtoolbench.dev/hi/fake-data-generator/',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'कोई भी (वेब ब्राउज़र)',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    inLanguage: 'hi',
+    description: 'मुफ़्त फेक डेटा जेनरेटर: यथार्थ मॉक डेटा — नाम, ईमेल, पते, कंपनियाँ, UUID — JSON, CSV या SQL INSERT में। 100% ब्राउज़र में।',
+  })} />
+
+  <aside class="related">
+    <h2>DevToolbench के और मुफ़्त टूल्स</h2>
+    <ul>
+      <li><a href="/hi/breach-checker/">पासवर्ड ब्रीच चेकर — जानें आपका ईमेल हैक हुआ या नहीं</a></li>
+      <li><a href="/hi/speed-test/">बल्क वेबसाइट स्पीड टेस्ट — एक साथ कई वेबसाइटें जाँचें</a></li>
+    </ul>
+  </aside>
+
+  <script>
+    import { faker } from '@faker-js/faker';
+
+    const MSG = {
+      selectField: 'कम से कम एक फ़ील्ड चुनें…',
+      copied: 'कॉपी हो गया!',
+      copyFail: 'कॉपी असफल',
+      copy: 'कॉपी',
+    };
+
+    // Data output column keys stay English/stable — only UI text is Hindi.
+    const FIELD_LABELS: Record<string, string> = {
+      fullName: 'full_name', email: 'email', phone: 'phone', street: 'street_address',
+      city: 'city', country: 'country', company: 'company', jobTitle: 'job_title',
+      uuid: 'uuid', date: 'date', boolean: 'boolean', avatar: 'avatar_url',
+      price: 'price', lorem: 'lorem',
+    };
+
+    const generators: Record<string, () => unknown> = {
+      fullName: () => faker.person.fullName(),
+      email: () => faker.internet.email(),
+      phone: () => faker.phone.number(),
+      street: () => faker.location.streetAddress(),
+      city: () => faker.location.city(),
+      country: () => faker.location.country(),
+      company: () => faker.company.name(),
+      jobTitle: () => faker.person.jobTitle(),
+      uuid: () => faker.string.uuid(),
+      date: () => faker.date.recent({ days: 365 }).toISOString().slice(0, 10),
+      boolean: () => faker.datatype.boolean(),
+      avatar: () => faker.image.avatar(),
+      price: () => faker.commerce.price({ min: 1, max: 999, dec: 2 }),
+      lorem: () => faker.lorem.paragraph(),
+    };
+
+    const container = document.querySelector('main')!;
+    const previewEl = document.getElementById('preview')!;
+    const rowCountInput = document.getElementById('row-count') as HTMLInputElement;
+    const tableNameInput = document.getElementById('table-name') as HTMLInputElement;
+    const tableNameWrap = document.getElementById('table-name-wrap')!;
+    const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement;
+    const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
+
+    function selectedFields(): string[] {
+      return Array.from(container.querySelectorAll<HTMLInputElement>('input[name="field"]:checked'))
+        .map((el) => el.value)
+        .filter((k) => k in generators);
+    }
+    function selectedFormat(): string {
+      return (container.querySelector<HTMLInputElement>('input[name="format"]:checked')?.value ?? 'json');
+    }
+    function rowCount(): number {
+      return Math.min(1000, Math.max(1, parseInt(rowCountInput.value, 10) || 1));
+    }
+
+    function generateRows(count: number): Record<string, unknown>[] {
+      const fields = selectedFields();
+      return Array.from({ length: count }, () =>
+        Object.fromEntries(fields.map((f) => [FIELD_LABELS[f] ?? f, generators[f]!()]))
+      );
+    }
+
+    function toJson(rows: Record<string, unknown>[]): string {
+      return JSON.stringify(rows, null, 2);
+    }
+    function csvEscape(v: unknown): string {
+      const s = String(v ?? '');
+      return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    }
+    function toCsv(rows: Record<string, unknown>[]): string {
+      if (rows.length === 0) return '';
+      const headers = Object.keys(rows[0]);
+      const lines = [headers.map(csvEscape).join(',')];
+      for (const row of rows) lines.push(headers.map((h) => csvEscape(row[h])).join(','));
+      return lines.join('\n');
+    }
+    function sqlEscape(v: unknown): string {
+      if (v === null || v === undefined) return 'NULL';
+      if (typeof v === 'number') return String(v);
+      if (typeof v === 'boolean') return v ? 'TRUE' : 'FALSE';
+      return `'${String(v).replace(/'/g, "''")}'`;
+    }
+    function toSql(rows: Record<string, unknown>[], table: string): string {
+      if (rows.length === 0) return '';
+      const table_ = /^[A-Za-z_][A-Za-z0-9_]*$/.test(table) ? table : 'mock_data';
+      const headers = Object.keys(rows[0]);
+      const values = rows.map((r) => `  (${headers.map((h) => sqlEscape(r[h])).join(', ')})`).join(',\n');
+      return `INSERT INTO ${table_} (${headers.map((h) => `"${h}"`).join(', ')})\nVALUES\n${values};`;
+    }
+
+    function formatRows(rows: Record<string, unknown>[]): string {
+      switch (selectedFormat()) {
+        case 'csv': return toCsv(rows);
+        case 'sql': return toSql(rows, tableNameInput.value.trim() || 'mock_data');
+        default: return toJson(rows);
+      }
+    }
+
+    function refreshPreview(): void {
+      const fields = selectedFields();
+      if (fields.length === 0) {
+        previewEl.textContent = MSG.selectField;
+        return;
+      }
+      previewEl.textContent = formatRows(generateRows(10));
+    }
+
+    container.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target.name === 'field' || target.name === 'format') {
+        tableNameWrap.classList.toggle('hidden', selectedFormat() !== 'sql');
+      }
+      refreshPreview();
+    });
+    rowCountInput.addEventListener('input', refreshPreview);
+    tableNameInput.addEventListener('input', refreshPreview);
+    refreshPreview();
+
+    copyBtn.addEventListener('click', async () => {
+      const text = formatRows(generateRows(rowCount()));
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = MSG.copied;
+      } catch {
+        copyBtn.textContent = MSG.copyFail;
+      }
+      setTimeout(() => (copyBtn.textContent = MSG.copy), 1500);
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const format = selectedFormat();
+      const text = formatRows(generateRows(rowCount()));
+      const ext = format === 'json' ? 'json' : format;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
+      a.download = `fake-data-${Date.now()}.${ext}`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  </script>
+
+  <style>
+    .intro { padding: 2rem 0 0.5rem; }
+    .intro h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .intro p { color: var(--text-dim); max-width: 44rem; margin: 0; }
+    .tool { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0; }
+    .controls { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+    @media (min-width: 48rem) { .controls { grid-template-columns: 2fr 1fr; } }
+    fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 0.875rem 1rem 1rem; margin: 0; }
+    legend { font-size: 0.8125rem; color: var(--text-dim); padding: 0 0.375rem; }
+    .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 0.375rem; }
+    .check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; cursor: pointer; color: var(--text-dim); }
+    .check:has(input:checked) { color: var(--text); }
+    .check input { accent-color: var(--good); }
+    .format-toggle { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .panel { display: flex; flex-direction: column; gap: 1rem; }
+    .field-label { display: block; font-size: 0.875rem; margin-bottom: 0.375rem; color: var(--text-dim); }
+    .panel input[type="number"], .panel input[type="text"] { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem 0.75rem; color: var(--text); font-size: 0.9375rem; }
+    .hidden { display: none; }
+    .actions { display: flex; gap: 0.5rem; margin-top: auto; }
+    .actions button { flex: 1; border: 1px solid var(--good); background: transparent; color: var(--good); border-radius: 6px; padding: 0.625rem 1rem; font-weight: 600; cursor: pointer; }
+    .actions button.primary { background: var(--good); color: #04211d; }
+    .actions button:hover { filter: brightness(1.1); }
+    .preview-block { margin-top: 1.25rem; }
+    .preview-label { font-size: 0.6875rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.5rem; }
+    #preview { max-height: 22rem; margin: 0; white-space: pre-wrap; word-break: break-word; }
+    .explainer { max-width: 46rem; padding: 1rem 0 2rem; }
+    .explainer h2 { font-size: 1.25rem; margin-top: 2rem; }
+    .explainer p { color: var(--text-dim); font-size: 0.9375rem; }
+    .faq details { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.5rem; }
+    .faq summary { font-weight: 600; }
+    .faq summary::marker { color: var(--good); }
+    .faq p { color: var(--text-dim); font-size: 0.9375rem; }
+    .related { max-width: 46rem; margin: 0 0 2rem; padding: 1rem 1.25rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; }
+    .related h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+    .related ul { margin: 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .related li { margin: 0.25rem 0; }
+  </style>
+</Layout>

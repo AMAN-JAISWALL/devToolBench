@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Contact DevToolbench"
+  description="Get in touch with the DevToolbench team — report bugs, suggest features, or ask questions about our free developer tools."
+  path="/contact"
+  keywords={[
+    'contact devtoolbench',
+    'devtoolbench support',
+    'developer tools contact',
+  ]}
+>
+  <article class="page-content">
+    <h1>Contact Us</h1>
+    <p class="lead">
+      Have a question, found a bug, or want to suggest a new tool? Reach out — we read
+      everything and respond when we can.
+    </p>
+
+    <section class="channels">
+      <div class="channel">
+        <h2>GitHub Issues</h2>
+        <p>
+          The fastest way to report a bug or request a feature is to open an issue on the
+          project's GitHub repository. Include the tool name, what you expected to happen,
+          and what actually happened (a screenshot helps).
+        </p>
+      </div>
+
+      <div class="channel">
+        <h2>Email</h2>
+        <p>
+          For general questions, security concerns, or anything else, send us an email at:<br />
+          <a href="mailto:hello@devtoolbench.dev" class="mono email-link">
+            hello@devtoolbench.dev
+          </a>
+        </p>
+      </div>
+
+      <div class="channel">
+        <h2>Response times</h2>
+        <p>
+          We're a small project run in our spare time, so we can't guarantee fast response
+          times — but we do read and respond to every message. Bug reports affecting tool
+          accuracy or security get priority.
+        </p>
+      </div>
+    </section>
+
+    <section class="security">
+      <h2>Security</h2>
+      <p>
+        If you believe you've found a security vulnerability — especially anything that could
+        compromise the k-anonymity model in the breach checker or expose the PageSpeed API
+        key — please report it via email rather than a public issue. We take security
+        reports seriously and will respond promptly.
+      </p>
+    </section>
+  </article>
+
+  <style>
+    .page-content { max-width: 46rem; padding: 2rem 0; }
+    .page-content h1 { font-size: 1.75rem; margin: 0 0 0.75rem; }
+    .page-content .lead { color: var(--text-dim); font-size: 1rem; max-width: 42rem; }
+    .page-content h2 { font-size: 1.25rem; margin-top: 2rem; color: var(--good); }
+    .page-content p { color: var(--text-dim); font-size: 0.9375rem; }
+    .channels { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.5rem; }
+    .channel {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+    .channel h2 { font-size: 1.0625rem; margin-top: 0; }
+    .channel p { margin: 0.5rem 0 0; }
+    .email-link { font-size: 1.0625rem; color: var(--good); }
+    .security {
+      margin-top: 2rem;
+      padding: 1rem 1.25rem;
+      background: rgba(248, 113, 113, 0.06);
+      border: 1px solid rgba(248, 113, 113, 0.2);
+      border-radius: 8px;
+    }
+    .security h2 { color: var(--bad); margin-top: 0; }
+  </style>
+</Layout>

@@ -1,0 +1,287 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="Test de Velocidad de Webs en Lote — Analiza Varias a la Vez (Gratis)"
+  description="Test de velocidad en lote gratis: mide hasta 10 sitios web a la vez con Google PageSpeed — puntuación de rendimiento, Core Web Vitals (LCP, CLS, TBT) y mejoras prioritarias por URL. Sin registro."
+  path="/speed-test"
+  locale="es"
+  keywords={[
+    'test de velocidad de webs en lote',
+    'medir velocidad varias webs',
+    'test velocidad múltiples urls',
+    'comprobar core web vitals',
+    'test de rendimiento web',
+    'pagespeed en lote',
+  ]}
+>
+  <section class="intro">
+    <h1>Test de velocidad de webs en lote — varias a la vez</h1>
+    <p>
+      Pega hasta 10 URLs y analízalas todas de una vez — puntuaciones de rendimiento, Core Web
+      Vitals y las mejoras principales de cada sitio en un solo lote. Pensado para agencias y
+      desarrolladores que auditan carteras completas de clientes, no página por página.
+    </p>
+  </section>
+
+  <section class="tool">
+    <form id="st-form">
+      <label class="field-label" for="st-urls">Una URL por línea (máx. 10)</label>
+      <textarea id="st-urls" rows="6" placeholder="example.com&#10;https://otra-web.org/pagina&#10;https://tercera.net" required></textarea>
+      <div class="row">
+        <button type="submit" id="st-submit">Ejecutar test en lote</button>
+        <span id="st-status" class="status mono" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+    <div id="st-results" class="results"></div>
+  </section>
+
+  <!-- Ad slot: in-content — paste your AdSense unit here after approval -->
+  <div class="ad-slot" data-ad-slot="in-content"></div>
+
+  <section class="explainer">
+    <h2>¿Por qué un test en lote?</h2>
+    <p>
+      La mayoría de herramientas gratis miden una URL cada vez. Si gestionas una docena de webs de
+      clientes, o quieres comparar tus páginas con la competencia antes y después de un rediseño,
+      repetir el proceso diez veces es tedioso. Esta herramienta ejecuta un lote: pega hasta 10
+      URLs, envía una vez, y obtienes un desglose por URL — puntuación de rendimiento de Google
+      PageSpeed, los Core Web Vitals que afectan al ranking (Largest Contentful Paint, Cumulative
+      Layout Shift, Total Blocking Time) y las dos o tres mejoras de mayor impacto que sugiere
+      Lighthouse para cada sitio.
+    </p>
+    <p>
+      Los análisis se ejecutan con estrategia móvil, que es la que usa Google para indexar. Cada URL
+      del lote se analiza de forma independiente — si un sitio está caído o falla su auditoría,
+      sigues obteniendo los resultados del resto. Las URLs pasan por la función serverless de esta
+      web hasta la API de PageSpeed Insights de Google; no se almacena nada.
+    </p>
+    <p class="mono small">https:// se añade automáticamente si lo omites.</p>
+
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq">
+      <details>
+        <summary>¿Por qué el límite de 10 URLs por lote?</summary>
+        <p>
+          Cada auditoría de PageSpeed tarda varios segundos y el nivel gratuito de la API tiene
+          límites de uso. Diez mantiene cada lote rápido, justo y gratis para todos. Si tienes más
+          sitios, ejecuta varios lotes.
+        </p>
+      </details>
+      <details>
+        <summary>¿Qué significan las vitals?</summary>
+        <p>
+          <strong>LCP</strong> (Largest Contentful Paint) mide la carga: bueno es menos de 2,5 s.
+          <strong>CLS</strong> (Cumulative Layout Shift) mide la estabilidad visual: bueno es menos
+          de 0,1. <strong>TBT</strong> (Total Blocking Time) mide la interactividad: bueno es menos
+          de 200 ms.
+        </p>
+      </details>
+      <details>
+        <summary>Una de mis URLs falló. ¿Por qué no falló todo el lote?</summary>
+        <p>
+          Cada URL se analiza de forma independiente y los errores se muestran en su propia fila.
+          Una URL privada, con redirección o inaccesible muestra su error en línea; el resto de
+          resultados no se ven afectados.
+        </p>
+      </details>
+      <details>
+        <summary>¿Almacenáis las URLs que testo?</summary>
+        <p>
+          No. Las URLs van a nuestra función serverless, se envían a la API de PageSpeed de Google
+          para la auditoría y se descartan. No hay base de datos — consulta la
+          <a href="/privacy-policy">política de privacidad</a>.
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'es',
+    mainEntity: [
+      { '@type': 'Question', name: '¿Por qué el límite de 10 URLs por lote?', acceptedAnswer: { '@type': 'Answer', text: 'Cada auditoría tarda varios segundos y la API gratuita tiene límites. Diez URLs mantiene el lote rápido y gratis para todos.' } },
+      { '@type': 'Question', name: '¿Qué significan las vitals?', acceptedAnswer: { '@type': 'Answer', text: 'LCP mide la carga (bien: <2,5 s), CLS la estabilidad visual (bien: <0,1) y TBT la interactividad (bien: <200 ms).' } },
+      { '@type': 'Question', name: 'Una URL falló, ¿por qué no falló el lote?', acceptedAnswer: { '@type': 'Answer', text: 'Cada URL se analiza de forma independiente; el error se muestra solo en su fila y el resto de resultados se conserva.' } },
+      { '@type': 'Question', name: '¿Almacenáis las URLs?', acceptedAnswer: { '@type': 'Answer', text: 'No: las URLs van a nuestra función serverless, después a la API de Google PageSpeed y se descartan. No hay base de datos.' } },
+    ],
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Test de velocidad de webs en lote',
+    url: 'https://devtoolbench.dev/es/speed-test/',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Cualquiera (navegador web)',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    inLanguage: 'es',
+    description: 'Test de velocidad gratis en lote: auditorías de Google PageSpeed para hasta 10 URLs a la vez con puntuaciones, Core Web Vitals y mejoras priorizadas.',
+  })} />
+
+  <aside class="related">
+    <h2>Más herramientas gratis de DevToolbench</h2>
+    <ul>
+      <li><a href="/es/breach-checker/">Comprobador de filtraciones — ¿tu correo fue hackeado?</a></li>
+      <li><a href="/es/fake-data-generator/">Generador de datos mock — JSON, CSV y SQL falsos</a></li>
+    </ul>
+  </aside>
+
+  <script>
+    const MSG = {
+      enterUrl: 'Introduce al menos una URL válida.',
+      tooMany: (max: number, n: number) => `Máximo ${max} URLs por lote — has introducido ${n}. Elimina ${n - max}.`,
+      testing: 'Analizando… puede tardar hasta un minuto.',
+      failed: (m: string) => `Fallido: ${m}`,
+      queued: 'en cola → analizando…',
+      invalid: 'URL no válida.',
+      rateLimited: 'Límite de peticiones de la API de PageSpeed. Prueba de nuevo en breve.',
+      apiFail: 'No se pudo contactar con la API de PageSpeed.',
+      notLocal: 'El backend del test de velocidad solo funciona en el sitio desplegado (Cloudflare Pages). Para probarlo localmente: añade tu clave de la API de PageSpeed en .dev.vars (ver .dev.vars.example) y ejecuta npm run preview:pages.',
+      noResult: 'PageSpeed no devolvió resultado para esta URL.',
+      testFail: 'Análisis fallido',
+    };
+
+    const form = document.getElementById('st-form') as HTMLFormElement;
+    const textarea = document.getElementById('st-urls') as HTMLTextAreaElement;
+    const submitBtn = document.getElementById('st-submit') as HTMLButtonElement;
+    const statusEl = document.getElementById('st-status')!;
+    const resultsEl = document.getElementById('st-results')!;
+    const MAX_URLS = 10;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const urls = normalizeUrls(textarea.value);
+      if (urls.length === 0) { statusEl.textContent = MSG.enterUrl; return; }
+      if (urls.length > MAX_URLS) { statusEl.textContent = MSG.tooMany(MAX_URLS, urls.length); return; }
+      submitBtn.disabled = true;
+      statusEl.textContent = MSG.testing;
+      resultsEl.innerHTML = renderQueued(urls);
+      try {
+        const res = await fetch('/api/speed-check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urls }),
+        });
+        if (res.status === 404) {
+          statusEl.textContent = MSG.notLocal;
+          resultsEl.innerHTML = '';
+          return;
+        }
+        if (!res.ok) {
+          const detail = await res.json().catch(() => null);
+          throw new Error(detail?.error || `Servidor ${res.status}`);
+        }
+        renderResults(await res.json());
+        statusEl.textContent = '';
+      } catch (err) {
+        statusEl.textContent = MSG.failed((err as Error).message);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    function normalizeUrls(value: string): string[] {
+      return value
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0)
+        .map((line) => (/^https?:\/\//i.test(line) ? line : `https://${line}`))
+        .filter((line) => {
+          try {
+            const u = new URL(line);
+            return !!u.hostname && u.hostname.includes('.');
+          } catch { return false; }
+        });
+    }
+
+    interface RowResult {
+      url: string; ok: boolean; score?: number; lcp?: string; cls?: string; tbt?: string;
+      opportunities?: string[]; error?: string;
+    }
+
+    function renderQueued(urls: string[]): string {
+      return urls.map((url) => `
+        <div class="result-row queued">
+          <div class="url mono">${escapeHtml(url)}</div>
+          <div class="row-state mono">${MSG.queued}</div>
+        </div>`).join('');
+    }
+
+    function renderResults(results: RowResult[]): void {
+      resultsEl.innerHTML = results.map(renderRow).join('');
+    }
+
+    function renderRow(r: RowResult): string {
+      const urlLine = `<div class="url mono">${escapeHtml(r.url)}</div>`;
+      if (!r.ok) {
+        return `<div class="result-row error">${urlLine}<div class="row-state mono">${escapeHtml(r.error || MSG.testFail)}</div></div>`;
+      }
+      const scoreColor = r.score! >= 90 ? 'good' : r.score! >= 50 ? 'warn' : 'bad';
+      const opps = (r.opportunities ?? []).map((o) => `<li>${escapeHtml(o)}</li>`).join('');
+      return `
+        <div class="result-row done">
+          ${urlLine}
+          <div class="metrics">
+            <div class="score ${scoreColor} mono">${r.score}<span class="unit">/100</span></div>
+            <div class="vitals mono">
+              <span>LCP <strong>${escapeHtml(r.lcp ?? '—')}</strong></span>
+              <span>CLS <strong>${escapeHtml(r.cls ?? '—')}</strong></span>
+              <span>TBT <strong>${escapeHtml(r.tbt ?? '—')}</strong></span>
+            </div>
+          </div>
+          ${opps ? `<ul class="opps">${opps}</ul>` : ''}
+        </div>`;
+    }
+
+    function escapeHtml(s: string): string {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+  </script>
+
+  <style>
+    .intro { padding: 2rem 0 0.5rem; }
+    .intro h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .intro p { color: var(--text-dim); max-width: 44rem; margin: 0; }
+    .tool { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0; }
+    .field-label { display: block; font-size: 0.875rem; margin-bottom: 0.375rem; color: var(--text-dim); }
+    textarea { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; color: var(--text); font-family: var(--mono); font-size: 0.875rem; resize: vertical; }
+    .row { display: flex; align-items: center; gap: 1rem; margin-top: 0.75rem; flex-wrap: wrap; }
+    .row button { background: var(--good); color: #04211d; border: none; border-radius: 6px; padding: 0.625rem 1.25rem; font-weight: 600; cursor: pointer; }
+    .row button:hover { filter: brightness(1.1); }
+    .row button:disabled { opacity: 0.6; cursor: wait; }
+    .status { font-size: 0.8125rem; color: var(--text-dim); }
+    .results { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .result-row { background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px; padding: 0.875rem 1rem; }
+    .result-row.queued .row-state { color: var(--text-dim); animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: 0.4; } }
+    .result-row.error { border-color: var(--bad); }
+    .result-row.error .row-state { color: var(--bad); }
+    .url { font-size: 0.8125rem; word-break: break-all; margin-bottom: 0.5rem; color: var(--text); }
+    .metrics { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+    .score { font-size: 1.5rem; font-weight: 700; }
+    .score .unit { font-size: 0.75rem; font-weight: 400; color: var(--text-dim); }
+    .score.good { color: var(--good); }
+    .score.warn { color: var(--warn); }
+    .score.bad { color: var(--bad); }
+    .vitals { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8125rem; color: var(--text-dim); }
+    .vitals strong { color: var(--text); }
+    .opps { margin: 0.75rem 0 0; padding-left: 1.25rem; color: var(--text-dim); font-size: 0.875rem; }
+    .explainer { max-width: 46rem; padding: 1rem 0 2rem; }
+    .explainer h2 { font-size: 1.25rem; margin-top: 2rem; }
+    .explainer p { color: var(--text-dim); font-size: 0.9375rem; }
+    .explainer .small { font-size: 0.8125rem; }
+    .faq details { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.5rem; }
+    .faq summary { font-weight: 600; }
+    .faq summary::marker { color: var(--good); }
+    .faq p { color: var(--text-dim); font-size: 0.9375rem; }
+    .related { max-width: 46rem; margin: 0 0 2rem; padding: 1rem 1.25rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; }
+    .related h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+    .related ul { margin: 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .related li { margin: 0.25rem 0; }
+  </style>
+</Layout>

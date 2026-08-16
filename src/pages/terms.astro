@@ -1,0 +1,134 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Terms & Conditions — DevToolbench"
+  description="Terms and conditions for using DevToolbench's free developer tools: breach checker, bulk website speed test, and fake data generator. Read before using the site."
+  path="/terms"
+  keywords={[
+    'devtoolbench terms',
+    'terms of service',
+    'developer tools terms',
+  ]}
+>
+  <article class="page-content">
+    <h1>Terms &amp; Conditions</h1>
+    <p class="updated">Last updated: August 2026</p>
+
+    <p>
+      By accessing and using devtoolbench.dev, you agree to be bound by these terms. If you
+      do not agree with any part of these terms, do not use the site.
+    </p>
+
+    <h2>1. Acceptance of terms</h2>
+    <p>
+      Use of devtoolbench.dev and its tools (breach checker, bulk speed test, and fake data
+      generator) constitutes acceptance of these terms and conditions in full. These terms
+      may be updated from time to time; continued use after changes are posted means you
+      accept the revised terms.
+    </p>
+
+    <h2>2. Description of service</h2>
+    <p>
+      DevToolbench provides free, ad-supported online tools for developers:
+    </p>
+    <ul>
+      <li>A password and email <a href="/breach-checker">breach checker</a> powered by
+        HaveIBeenPwned and XposedOrNot APIs.</li>
+      <li>A <a href="/speed-test">bulk website speed test</a> powered by Google PageSpeed
+        Insights.</li>
+      <li>A <a href="/fake-data-generator">fake data generator</a> powered by @faker-js/faker
+        running entirely in the browser.</li>
+    </ul>
+    <p>
+      The site is provided "as is" and "as available" without warranties of any kind, either
+      express or implied, including but not limited to warranties of merchantability, fitness
+      for a particular purpose, or non-infringement.
+    </p>
+
+    <h2>3. No account, no stored data</h2>
+    <p>
+      DevToolbench has no user accounts, no login system, and no database. We do not collect,
+      store, or process personal information for account purposes. Each tool's data handling is
+      described in the <a href="/privacy-policy">privacy policy</a>.
+    </p>
+
+    <h2>4. Use of the tools</h2>
+    <p>You agree to use the tools responsibly:</p>
+    <ul>
+      <li>Do not use the tools for any illegal, harmful, or abusive purpose.</li>
+      <li>Do not attempt to overwhelm the APIs the tools depend on through automated or
+        excessive requests.</li>
+      <li>Do not use the fake data generator to create deceptive content, impersonate real
+        individuals, or generate data for phishing, spam, or fraud.</li>
+      <li>Do not use the speed test to audit websites you do not have a legitimate interest
+        in testing.</li>
+      <li>Do not attempt to scrape, reverse-engineer, or circumvent rate limits on the
+        underlying APIs.</li>
+    </ul>
+
+    <h2>5. Accuracy of results</h2>
+    <p>
+      Results from the breach checker reflect only the data indexed by HaveIBeenPwned and
+      XposedOrNot at the time of the query. A "not found" result does not guarantee that
+      your credentials have never been compromised. Speed test results reflect a snapshot of
+      Google's PageSpeed audit and may vary between runs. Generated fake data is randomized
+      and may occasionally produce values that resemble real information — treat it as
+      synthetic test data, not real data.
+    </p>
+
+    <h2>6. Third-party APIs and services</h2>
+    <p>
+      The tools rely on third-party services and APIs (HaveIBeenPwned, XposedOrNot, Google
+      PageSpeed Insights). DevToolbench does not control the availability, accuracy, or
+      terms of these third-party services. If a third-party API changes, becomes unavailable,
+      or imposes new restrictions, the corresponding tool may be affected without notice.
+    </p>
+
+    <h2>7. Intellectual property</h2>
+    <p>
+      The DevToolbench name, logo, site design, and original code are the intellectual property
+      of the project authors. The underlying open-source libraries (Astro, @faker-js/faker) are
+      subject to their respective licenses.
+    </p>
+
+    <h2>8. Limitation of liability</h2>
+    <p>
+      To the fullest extent permitted by applicable law, DevToolbench and its authors shall not
+      be liable for any direct, indirect, incidental, special, consequential, or punitive
+      damages arising from your use of, or inability to use, the site or its tools. This
+      includes, but is not limited to, damages for loss of data, revenue, or profits.
+    </p>
+
+    <h2>9. Advertisements</h2>
+    <p>
+      The site displays advertisements to cover hosting costs. Ad content is served by
+      third-party ad networks and is subject to those networks' own terms and privacy
+      policies. DevToolbench does not endorse or control the content of third-party
+      advertisements.
+    </p>
+
+    <h2>10. Changes to terms</h2>
+    <p>
+      We may update these terms from time to time. Material changes will be reflected by
+      updating the "Last updated" date at the top of this page. Your continued use of the
+      site after any changes constitutes acceptance of the new terms.
+    </p>
+
+    <h2>11. Contact</h2>
+    <p>
+      Questions about these terms? Reach out through the <a href="/contact">contact page</a>.
+    </p>
+  </article>
+
+  <style>
+    .page-content { max-width: 46rem; padding: 2rem 0; }
+    .page-content h1 { font-size: 1.75rem; margin: 0 0 0.25rem; }
+    .page-content .updated { color: var(--text-dim); font-size: 0.875rem; margin-top: 0; }
+    .page-content h2 { font-size: 1.125rem; margin-top: 1.75rem; color: var(--good); }
+    .page-content p { color: var(--text-dim); font-size: 0.9375rem; }
+    .page-content ul { color: var(--text-dim); font-size: 0.9375rem; }
+    .page-content li { margin-bottom: 0.375rem; }
+  </style>
+</Layout>

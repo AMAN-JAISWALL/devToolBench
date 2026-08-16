@@ -1,0 +1,429 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="Comprobador de Filtraciones de Contraseñas Gratis — ¿Tu correo fue hackeado?"
+  description="Comprobador de filtraciones gratis: averigua si tu contraseña aparece en filtraciones conocidas (hash local, nunca se envía) y si tu correo fue hackeado o filtrado. Estilo HaveIBeenPwned, sin registro."
+  path="/breach-checker"
+  locale="es"
+  keywords={[
+    'comprobador de filtraciones de contraseñas',
+    'comprobar si mi correo fue hackeado',
+    'filtración de contraseñas',
+    'have i been pwned',
+    'contraseña filtrada',
+    'comprobador de correo hackeado',
+    'buscar filtración de datos',
+  ]}
+>
+  <section class="intro">
+    <h1>Comprobador gratis de contraseñas y correos filtrados</h1>
+    <p>
+      Averigua si tu contraseña ha aparecido en filtraciones de datos conocidas y si tu correo fue
+      hackeado o filtrado. Dos comprobaciones, dos modelos de privacidad distintos — ambas explicadas
+      con honestidad a continuación.
+    </p>
+  </section>
+
+  <section class="tool" aria-labelledby="pw-heading">
+    <h2 id="pw-heading">1. Comprobación de contraseña</h2>
+    <p class="privacy-note good">
+      Tu contraseña se hashea (SHA-1) en tu navegador. Solo los primeros 5 caracteres del hash salen
+      de tu dispositivo — la contraseña nunca toca la red.
+    </p>
+
+    <div class="live-hash" aria-live="polite">
+      <span class="label mono">SHA-1 (en vivo)</span>
+      <code id="live-hash" class="mono">&nbsp;</code>
+    </div>
+
+    <form id="pw-form">
+      <label class="field-label" for="pw-input">Contraseña a comprobar</label>
+      <div class="row">
+        <input id="pw-input" type="password" autocomplete="off" placeholder="Escribe o pega una contraseña…" required />
+        <button type="submit">Comprobar contraseña</button>
+      </div>
+    </form>
+
+    <div id="pw-result" class="result" role="status" aria-live="polite"></div>
+
+    <details class="how">
+      <summary>Cómo funciona (k-anonimato)</summary>
+      <p>
+        Al enviar, tu navegador calcula localmente el hash SHA-1 de la contraseña con la Web Crypto
+        API. Luego envía solo los primeros 5 caracteres del hash a la API Pwned Passwords de
+        HaveIBeenPwned, que responde con todos los sufijos de hashes filtrados que comparten ese
+        prefijo. Tu navegador coteja el resto de tu hash localmente. La API nunca conoce tu
+        contraseña ni tu hash completo.
+      </p>
+    </details>
+  </section>
+
+  <section class="tool" aria-labelledby="email-heading">
+    <h2 id="email-heading">2. Comprobación de correo</h2>
+    <p class="privacy-note warn">
+      A diferencia de la comprobación de contraseña, tu dirección de correo <strong>sí</strong> se
+      envía por HTTPS a la API de XposedOrNot para ejecutar la búsqueda. Así funciona esta
+      comprobación — y lo decimos claramente.
+    </p>
+
+    <form id="email-form">
+      <label class="field-label" for="email-input">Correo a comprobar</label>
+      <div class="row">
+        <input id="email-input" type="email" autocomplete="off" placeholder="tu@ejemplo.com" required />
+        <button type="submit">Comprobar correo</button>
+      </div>
+    </form>
+
+    <div id="email-result" class="result" role="status" aria-live="polite"></div>
+
+    <p class="data-credit">
+      Datos de filtraciones:
+      <a href="https://xposedornot.com" rel="noopener nofollow" target="_blank">XposedOrNot</a> (comprobación de correo) y
+      <a href="https://haveibeenpwned.com" rel="noopener nofollow" target="_blank">HaveIBeenPwned</a> (contraseñas)
+    </p>
+  </section>
+
+  <!-- Ad slot: in-content — paste your AdSense unit here after approval -->
+  <div class="ad-slot" data-ad-slot="in-content"></div>
+
+  <section class="explainer">
+    <h2>¿Qué es una filtración de datos y por qué debería importarte?</h2>
+    <p>
+      Una filtración de datos ocurre cuando se extrae información de un sistema sin permiso —
+      normalmente la base de datos de usuarios de una empresa hackeada y publicada en internet. Las
+      filtraciones han expuesto miles de millones de cuentas en la última década: correos,
+      contraseñas (a menudo mal hasheadas o en texto plano), nombres, teléfonos y a veces datos de
+      pago. Cuando tus credenciales aparecen en una filtración, pasan a listas que los atacantes
+      usan en ataques de credential stuffing — probando automáticamente tu combinación de correo y
+      contraseña en cientos de otras webs.
+    </p>
+    <p>
+      Esta herramienta comprueba tu exposición de dos formas. La <strong>comprobación de
+      contraseña</strong> compara el hash SHA-1 con el corpus de Pwned Passwords de HaveIBeenPwned:
+      más de 600 millones de contraseñas recopiladas de filtraciones reales. La
+      <strong>comprobación de correo</strong> pregunta a XposedOrNot en qué bases de filtraciones
+      conocidas aparece tu dirección, para que veas exactamente qué servicios filtraron tus datos y
+      cambies esas contraseñas primero.
+    </p>
+    <p>
+      La comprobación de contraseña se basa en una técnica de privacidad llamada k-anonimato: tu
+      navegador hashea la contraseña, envía solo un prefijo de 5 caracteres del hash y coteja el
+      resto localmente contra la respuesta de la API. Como miles de hashes comparten cualquier
+      prefijo, la API no puede determinar qué contraseña comprobaste. Tu contraseña nunca sale de tu
+      navegador — no es un eslogan de marketing, es cómo funciona el código, y puedes verificarlo en
+      la pestaña de red de tu navegador: verás una petición a
+      <code>api.pwnedpasswords.com/range/XXXXX</code> y nada que contenga tu contraseña.
+    </p>
+    <p>
+      Una advertencia honesta: estas comprobaciones solo cubren filtraciones <em>conocidas</em>. Un
+      resultado de "no encontrada" significa que tu contraseña o correo no está en los datasets
+      públicos que indexan estas APIs — no es una garantía de seguridad. Uses o no esta herramienta,
+      emplea contraseñas únicas por sitio y un gestor de contraseñas.
+    </p>
+
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq">
+      <details>
+        <summary>¿Es seguro escribir aquí mi contraseña real?</summary>
+        <p>
+          La contraseña se hashea (SHA-1) en tu navegador antes de enviar nada, y a la API solo llega
+          un prefijo de 5 caracteres del hash. La API ve un prefijo compartido por cientos de hashes
+          y devuelve todas las coincidencias; tu navegador localiza la tuya. Aun así, si prefieres
+          prudencia, comprueba una contraseña que estés considerando, no tu contraseña maestra.
+        </p>
+      </details>
+      <details>
+        <summary>¿Qué significa "encontrada en X filtraciones"?</summary>
+        <p>
+          Que esa contraseña exacta ha aparecido X veces en las bases de filtraciones recopiladas
+          por HaveIBeenPwned. Cuanto mayor sea el número, más conocida es la contraseña y más
+          probable que los atacantes la prueben en ataques automáticos. Cualquier cifra superior a
+          cero es motivo para dejar de usarla.
+        </p>
+      </details>
+      <details>
+        <summary>¿Por qué la comprobación de correo envía mi correo a un servidor?</summary>
+        <p>
+          Para saber si tu dirección aparece en listas de filtraciones hay que buscar en esas listas,
+          y no existe un truco de k-anonimato para búsquedas exactas de correo. Tu dirección viaja
+          por HTTPS a XposedOrNot, que ejecuta la comprobación. Si no te parece aceptable, omite la
+          comprobación de correo.
+        </p>
+      </details>
+      <details>
+        <summary>Mi correo aparece en un servicio que nunca usé. ¿Cómo es posible?</summary>
+        <p>
+          Las bases de filtraciones suelen contener correos recopilados de listas de spam
+          agregadas, listas combinadas o filtraciones de terceros, no solo los registros del propio
+          servicio. Tu dirección pudo inclusionarse sin tener cuenta. Tómalo como señal de que la
+          dirección circula, y evita reutilizar contraseñas.
+        </p>
+      </details>
+      <details>
+        <summary>¿Qué hago si mi correo aparece en filtraciones?</summary>
+        <p>
+          Cambia la contraseña de cada servicio listado (y de donde la hayas reutilizado), activa la
+          autenticación en dos pasos y considera un gestor de contraseñas para que cada cuenta tenga
+          una contraseña única. Empieza por los servicios filtrados — son los puntos de exposición
+          conocidos.
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'es',
+    mainEntity: [
+      { '@type': 'Question', name: '¿Es seguro escribir aquí mi contraseña real?', acceptedAnswer: { '@type': 'Answer', text: 'La contraseña se hashea (SHA-1) en tu navegador y a la API solo llega un prefijo de 5 caracteres del hash. La contraseña completa nunca sale de tu dispositivo.' } },
+      { '@type': 'Question', name: '¿Qué significa "encontrada en X filtraciones"?', acceptedAnswer: { '@type': 'Answer', text: 'Que esa contraseña ha aparecido X veces en las bases de filtraciones de HaveIBeenPwned. Cualquier cifra superior a cero es motivo para cambiarla.' } },
+      { '@type': 'Question', name: '¿Por qué la comprobación de correo envía mi correo a un servidor?', acceptedAnswer: { '@type': 'Answer', text: 'Buscar tu dirección en listas de filtraciones requiere enviarla: tu correo viaja por HTTPS a XposedOrNot, que ejecuta la comprobación.' } },
+      { '@type': 'Question', name: 'Mi correo aparece en un servicio que nunca usé. ¿Cómo?', acceptedAnswer: { '@type': 'Answer', text: 'Las bases de filtraciones incluyen correos de listas de spam y filtraciones de terceros. Es señal de que la dirección circula.' } },
+      { '@type': 'Question', name: '¿Qué hago si mi correo aparece en filtraciones?', acceptedAnswer: { '@type': 'Answer', text: 'Cambia las contraseñas de los servicios listados, activa 2FA y usa un gestor de contraseñas.' } },
+    ],
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Comprobador de filtraciones de contraseñas y correo',
+    url: 'https://devtoolbench.dev/es/breach-checker/',
+    applicationCategory: 'SecurityApplication',
+    operatingSystem: 'Cualquiera (navegador web)',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    inLanguage: 'es',
+    description: 'Comprobador gratis de contraseñas filtradas y búsqueda de correo en filtraciones. Las contraseñas se hashean localmente; solo se envía un prefijo de 5 caracteres (k-anonimato).',
+  })} />
+
+  <aside class="related">
+    <h2>Más herramientas gratis de DevToolbench</h2>
+    <ul>
+      <li><a href="/es/speed-test/">Test de velocidad de webs en lote — analiza varias a la vez</a></li>
+      <li><a href="/es/fake-data-generator/">Generador de datos falsos — mock JSON, CSV y SQL</a></li>
+    </ul>
+  </aside>
+
+  <script>
+    const MSG = {
+      hashing: 'Hasheando localmente y consultando…',
+      found: (n: string) => `Encontrada en ${n} entradas de filtraciones conocidas — no uses esta contraseña.`,
+      notFound: 'No aparece en datos de filtraciones conocidos. Ojo: esto solo cubre listas públicas conocidas — no es una garantía de seguridad.',
+      apiError: 'No se pudo contactar con la API. Inténtalo de nuevo en unos momentos.',
+      invalidEmail: 'Introduce una dirección de correo válida.',
+      checking: 'Comprobando bases de filtraciones…',
+      rateLimit: 'Límite de peticiones alcanzado — la API gratuita permite unas 2 comprobaciones/segundo y 50–100 por hora. El botón se reactiva en 30 segundos; reintentar el mismo correo es instantáneo durante 10 minutos.',
+      noBreaches: 'No se encontraron filtraciones conocidas para este correo.',
+      foundN: (n: number) => `Encontrado en ${n} filtración${n === 1 ? '' : 'es'} conocida${n === 1 ? '' : 's'}:`,
+      advice: 'Cambia la contraseña de cada servicio listado — y de donde la reutilizaras — y activa la autenticación en dos pasos.',
+    };
+
+    const pwForm = document.getElementById('pw-form') as HTMLFormElement;
+    const pwInput = document.getElementById('pw-input') as HTMLInputElement;
+    const pwResult = document.getElementById('pw-result')!;
+    const liveHashEl = document.getElementById('live-hash')!;
+
+    async function sha1Hex(text: string): Promise<string> {
+      const data = new TextEncoder().encode(text);
+      const digest = await crypto.subtle.digest('SHA-1', data);
+      return Array.from(new Uint8Array(digest))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('')
+        .toUpperCase();
+    }
+
+    let hashTimer: ReturnType<typeof setTimeout> | undefined;
+    pwInput.addEventListener('input', () => {
+      clearTimeout(hashTimer);
+      hashTimer = setTimeout(async () => {
+        liveHashEl.textContent = pwInput.value ? await sha1Hex(pwInput.value) : '\u00a0';
+      }, 80);
+    });
+
+    pwForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = pwInput.value;
+      if (!password) return;
+      pwResult.className = 'result info';
+      pwResult.textContent = MSG.hashing;
+      try {
+        const hash = await sha1Hex(password);
+        const prefix = hash.slice(0, 5);
+        const suffix = hash.slice(5);
+        const res = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`, {
+          headers: { 'Add-Padding': 'true' },
+        });
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        const body = await res.text();
+        let count = 0;
+        for (const line of body.split('\n')) {
+          const sep = line.indexOf(':');
+          if (sep === -1) continue;
+          if (line.slice(0, sep).trim() === suffix) {
+            count = parseInt(line.slice(sep + 1).trim(), 10) || 0;
+            break;
+          }
+        }
+        if (count > 0) {
+          pwResult.className = 'result bad';
+          pwResult.textContent = MSG.found(count.toLocaleString('es-ES'));
+        } else {
+          pwResult.className = 'result good';
+          pwResult.textContent = MSG.notFound;
+        }
+      } catch {
+        pwResult.className = 'result info';
+        pwResult.textContent = MSG.apiError;
+      }
+    });
+
+    const emailForm = document.getElementById('email-form') as HTMLFormElement;
+    const emailInput = document.getElementById('email-input') as HTMLInputElement;
+    const emailResult = document.getElementById('email-result')!;
+    const emailBtn = emailForm.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    // Nivel gratuito de XposedOrNot: ~2 req/s, 50–100/hora por cliente.
+    let emailBusy = false;
+    const CACHE_TTL = 10 * 60 * 1000;
+    function cacheGet(email: string): { cls: string; html: string } | null {
+      try {
+        const raw = sessionStorage.getItem(`xon-${email}`);
+        if (!raw) return null;
+        const { t, cls, html } = JSON.parse(raw);
+        return Date.now() - t < CACHE_TTL ? { cls, html } : null;
+      } catch { return null; }
+    }
+    function cacheSet(email: string, cls: string, html: string): void {
+      try { sessionStorage.setItem(`xon-${email}`, JSON.stringify({ t: Date.now(), cls, html })); } catch { /* modo privado */ }
+    }
+    function startCooldown(seconds: number): void {
+      let left = seconds;
+      emailBtn.disabled = true;
+      const original = emailBtn.textContent;
+      const iv = setInterval(() => {
+        left--;
+        if (left <= 0) {
+          clearInterval(iv);
+          emailBtn.disabled = false;
+          emailBtn.textContent = original;
+        } else {
+          emailBtn.textContent = `Reintentar en ${left}s`;
+        }
+      }, 1000);
+    }
+
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (emailBusy || emailBtn.disabled) return;
+      const email = emailInput.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailResult.className = 'result info';
+        emailResult.textContent = MSG.invalidEmail;
+        return;
+      }
+      const cached = cacheGet(email);
+      if (cached) {
+        emailResult.className = cached.cls;
+        emailResult.innerHTML = cached.html;
+        return;
+      }
+      emailBusy = true;
+      emailBtn.disabled = true;
+      emailResult.className = 'result info';
+      emailResult.textContent = MSG.checking;
+      try {
+        const res = await fetch(`https://api.xposedornot.com/v1/check-email/${encodeURIComponent(email)}`);
+        if (res.status === 429) {
+          emailResult.className = 'result info';
+          emailResult.textContent = MSG.rateLimit;
+          startCooldown(30);
+          return;
+        }
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        const data = await res.json();
+        if (data?.Error || !data?.breaches) {
+          emailResult.className = 'result good';
+          emailResult.innerHTML = MSG.noBreaches;
+          cacheSet(email, 'result good', emailResult.innerHTML);
+          return;
+        }
+        const names: string[] = Array.isArray(data.breaches?.[0]) ? data.breaches[0] : data.breaches;
+        if (!Array.isArray(names) || names.length === 0) {
+          emailResult.className = 'result good';
+          emailResult.innerHTML = MSG.noBreaches;
+          cacheSet(email, 'result good', emailResult.innerHTML);
+          return;
+        }
+        emailResult.className = 'result bad';
+        emailResult.innerHTML = `
+          <p><strong>${MSG.foundN(names.length)}</strong></p>
+          <ul>${names.map((n) => `<li class="mono">${escapeHtml(String(n))}</li>`).join('')}</ul>
+          <p class="advice">${MSG.advice}</p>
+        `;
+        cacheSet(email, 'result bad', emailResult.innerHTML);
+      } catch {
+        emailResult.className = 'result info';
+        emailResult.textContent = MSG.apiError;
+      } finally {
+        emailBusy = false;
+        if (!emailBtn.textContent?.includes('Reintentar')) emailBtn.disabled = false;
+      }
+    });
+
+    function escapeHtml(s: string): string {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+  </script>
+
+  <style>
+    .intro { padding: 2rem 0 0.5rem; }
+    .intro h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .intro p { color: var(--text-dim); max-width: 44rem; margin: 0; }
+    .tool { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0; }
+    .tool h2 { margin: 0 0 0.75rem; font-size: 1.25rem; }
+    .privacy-note { font-size: 0.875rem; border-radius: 6px; padding: 0.625rem 0.875rem; margin: 0 0 1rem; }
+    .privacy-note.good { color: var(--good); background: rgba(45, 212, 191, 0.08); }
+    .privacy-note.warn { color: var(--warn); background: rgba(251, 191, 36, 0.08); }
+    .live-hash { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1rem; padding: 0.625rem 0.875rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; }
+    .live-hash .label { font-size: 0.6875rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+    .live-hash code { font-size: 0.8125rem; word-break: break-all; color: var(--good); min-height: 1.2em; }
+    .field-label { display: block; font-size: 0.875rem; margin-bottom: 0.375rem; color: var(--text-dim); }
+    .row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .row input { flex: 1 1 14rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; padding: 0.625rem 0.875rem; color: var(--text); font-family: var(--mono); font-size: 0.9375rem; }
+    .row button { background: var(--good); color: #04211d; border: none; border-radius: 6px; padding: 0.625rem 1.25rem; font-weight: 600; font-size: 0.9375rem; cursor: pointer; }
+    .row button:hover { filter: brightness(1.1); }
+    .result { margin-top: 1rem; border-radius: 6px; padding: 0.75rem 1rem; font-size: 0.9375rem; }
+    .result:empty { display: none; }
+    .result.good { color: var(--good); background: rgba(45, 212, 191, 0.08); }
+    .result.bad { color: var(--bad); background: rgba(248, 113, 113, 0.08); }
+    .result.info { color: var(--text-dim); background: var(--bg-input); }
+    .result ul { margin: 0.5rem 0; padding-left: 1.25rem; }
+    .result .advice { color: var(--warn); margin-bottom: 0; font-size: 0.875rem; }
+    details { margin-top: 1rem; }
+    details summary { cursor: pointer; color: var(--text-dim); font-size: 0.875rem; }
+    details p { color: var(--text-dim); font-size: 0.875rem; }
+    .data-credit {
+      margin: 1rem 0 0;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      opacity: 0.75;
+      border-top: 1px solid var(--border);
+      padding-top: 0.75rem;
+    }
+    .explainer { max-width: 46rem; padding: 1rem 0 2rem; }
+    .explainer h2 { font-size: 1.25rem; margin-top: 2rem; }
+    .explainer p, .faq p { color: var(--text-dim); font-size: 0.9375rem; }
+    .explainer code { color: var(--good); font-size: 0.875em; }
+    .faq details { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.5rem; }
+    .faq summary { font-weight: 600; }
+    .faq summary::marker { color: var(--good); }
+    .related { max-width: 46rem; margin: 0 0 2rem; padding: 1rem 1.25rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; }
+    .related h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+    .related ul { margin: 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .related li { margin: 0.25rem 0; }
+  </style>
+</Layout>

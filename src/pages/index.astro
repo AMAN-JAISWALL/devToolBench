@@ -1,0 +1,295 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="DevToolbench — Free Online Developer Tools"
+  description="A free collection of developer tools from devtoolbench.dev: check if your password or email appears in known data breaches, bulk-test website speed, and generate fake mock data as JSON, CSV, or SQL. No login required."
+  keywords={[
+    'free developer tools',
+    'online dev tools',
+    'free web tools no signup',
+    'password breach checker',
+    'bulk website speed test',
+    'fake data generator',
+    'mock data generator',
+  ]}
+  path="/"
+>
+  <section class="hero">
+    <h1>Free developer tools. <span class="mono accent">No login. No nonsense.</span></h1>
+    <p>
+      Three fast, privacy-conscious <strong>free online dev tools</strong> that run in your
+      browser or on a tiny serverless proxy — built on free public APIs. Nothing here needs
+      an account, and there's nothing to sign up for.
+    </p>
+  </section>
+
+  <section class="cards" aria-label="Tools">
+    <a class="card" href="/breach-checker">
+      <h2>Password &amp; Email Breach Checker</h2>
+      <p>Check if your password or email appears in known data breaches — passwords are hashed locally and never leave your browser.</p>
+      <span class="card-tag mono">sha1 · k-anonymity</span>
+    </a>
+    <a class="card" href="/speed-test">
+      <h2>Bulk Website Speed Test</h2>
+      <p>Test up to 10 websites at once with Google PageSpeed — performance scores, Core Web Vitals, and top fixes in one batch.</p>
+      <span class="card-tag mono">lighthouse · batch</span>
+    </a>
+    <a class="card" href="/fake-data-generator">
+      <h2>Fake Data Generator</h2>
+      <p>Generate up to 1,000 rows of realistic mock data — names, emails, addresses, UUIDs — exported as JSON, CSV, or SQL. 100% local.</p>
+      <span class="card-tag mono">faker · export</span>
+    </a>
+  </section>
+
+  <section class="about">
+    <h2>Why is this free?</h2>
+    <p>
+      Because developer tools shouldn't need a credit card. These utilities are built on free,
+      public APIs (HaveIBeenPwned, XposedOrNot, Google PageSpeed) and open-source libraries,
+      hosted on Cloudflare's generous free tier. Ads cover the hosting costs. That's the whole
+      business model.
+    </p>
+  </section>
+
+  <section class="site-links">
+    <h2>About DevToolbench</h2>
+    <p>
+      DevToolbench is a free, ad-supported toolkit built by developers, for developers.
+      No accounts, no tracking, no paywalls — just fast utilities that do one thing well.
+    </p>
+    <div class="link-cards">
+      <a class="link-card" href="/about">
+        <h3>About Us</h3>
+        <p>Who built this, why it's free, and how we approach privacy and transparency.</p>
+      </a>
+      <a class="link-card" href="/contact">
+        <h3>Contact Us</h3>
+        <p>Report a bug, suggest a feature, or ask a question about any of the tools.</p>
+      </a>
+      <a class="link-card" href="/privacy-policy">
+        <h3>Privacy Policy</h3>
+        <p>What each tool does with your data, explained honestly and tool by tool.</p>
+      </a>
+      <a class="link-card" href="/terms">
+        <h3>Terms &amp; Conditions</h3>
+        <p>Rules for using the site — short, plain English, no surprises.</p>
+      </a>
+    </div>
+  </section>
+
+  <article class="seo-copy">
+    <h2>Free developer tools that respect your privacy</h2>
+    <p>
+      DevToolbench is a small, focused collection of <strong>free online developer tools</strong>
+      — the kind you reach for several times a week but never want to sign up for. There is no
+      account system, no email capture, and no "upgrade to pro" wall on any page. Every tool
+      runs either entirely in your browser or through a minimal serverless proxy, and each one
+      explains in plain language exactly what data leaves your device — and what doesn't.
+    </p>
+
+    <h3>1. Password &amp; email breach checker</h3>
+    <p>
+      Data breaches have exposed tens of billions of credentials, and attackers replay them in
+      automated credential-stuffing attacks against every major website. Our
+      <a href="/breach-checker">free password breach checker</a> tells you whether a specific
+      password has appeared in known breach corpora using the HaveIBeenPwned Pwned Passwords
+      database. The privacy design matters here: your password is hashed with SHA-1 locally in
+      your browser, and only the first five characters of that hash are ever transmitted — a
+      technique called k-anonymity. The API returns every breached hash sharing your prefix,
+      and the match happens on your device. The full password never touches the network; you
+      can verify that yourself in your browser's dev tools.
+    </p>
+    <p>
+      The <a href="/breach-checker">email breach check</a> answers the other half of the
+      question — <em>check if my email was hacked</em> — by searching known breach databases
+      for your address and listing every service that leaked it, so you know exactly which
+      passwords to change first. We're upfront that this lookup does send your email address
+      over HTTPS to the XposedOrNot API; that's simply how an exact-match email search works,
+      and we'd rather tell you than pretend otherwise.
+    </p>
+
+    <h3>2. Bulk website speed test</h3>
+    <p>
+      Most free speed tools test one URL at a time, which is painful when you manage a client
+      portfolio, monitor competitors, or regression-test a whole site after a redesign. Our
+      <a href="/speed-test">bulk website speed test</a> takes up to ten URLs in a single batch
+      and returns each page's Google PageSpeed performance score alongside the Core Web Vitals
+      that affect search rankings: Largest Contentful Paint, Cumulative Layout Shift, and
+      Total Blocking Time. Each URL also gets a short, prioritized fix list drawn from the
+      Lighthouse audit — the two or three changes with the biggest estimated savings, not a
+      wall of jargon. Audits run against the mobile strategy, matching how Google indexes the
+      web, and a single failing URL never breaks the rest of your batch.
+    </p>
+
+    <h3>3. Fake data generator</h3>
+    <p>
+      Real user data in a development environment is a compliance risk and a debugging
+      distraction. Our <a href="/fake-data-generator">fake data generator</a> produces up to
+      1,000 rows of realistic mock data across fourteen field types — names, emails, phone
+      numbers, street addresses, companies, job titles, UUIDs, prices, and more — rendered
+      live as you configure it. Export as JSON for APIs, properly escaped CSV for spreadsheets
+      and imports, or ready-to-run SQL INSERT statements with your own table name. It's a
+      free alternative to Mockaroo for everyday volumes: all fields and the full row count are
+      available to everyone, with no account. Generation happens entirely client-side using an
+      open-source library bundled at build time, so there are no rate limits, no outages, and
+      zero network requests after the page loads.
+    </p>
+
+    <h3>Built to be fast, honest, and free</h3>
+    <p>
+      Every page on devtoolbench.dev ships as static HTML on a CDN, loads without a UI
+      framework, and works on mobile. The privacy policy spells out, tool by tool, what is
+      sent where — because the fastest way to earn trust in security tooling is to be the most
+      transparent site in the results. Bookmark the tools you use, share them with your team,
+      and skip the sign-up sheet forever.
+    </p>
+  </article>
+
+  <section class="home-faq">
+    <h2>Frequently asked questions</h2>
+    <details>
+      <summary>Are these developer tools really free?</summary>
+      <p>Yes — every tool on devtoolbench.dev is completely free with no usage limits, no premium tier, and no paywalled features. The site is ad-supported: ads cover hosting costs, and all 14 fake-data fields, the full 1,000-row exports, unlimited breach checks, and 10-URL speed batches are available to everyone.</p>
+    </details>
+    <details>
+      <summary>Do I need to create an account or sign up?</summary>
+      <p>No. There is no account system anywhere on the site — nothing to register, no email to verify, no password to remember. Open a tool, use it, close the tab. That's the entire experience by design.</p>
+    </details>
+    <details>
+      <summary>Is it safe to check my password here?</summary>
+      <p>Yes. Your password is hashed (SHA-1) locally in your browser, and only the first 5 characters of that hash are sent to the HaveIBeenPwned API — a privacy technique called k-anonymity. The full password and full hash never leave your device, and you can verify this in your browser's network tab. The email check is different: it does send your email address over HTTPS to XposedOrNot to search breach databases, and we state that plainly on the tool page.</p>
+    </details>
+    <details>
+      <summary>What tools are included in DevToolbench?</summary>
+      <p>Three tools: a password and email <a href="/breach-checker">breach checker</a> that tells you if your credentials appeared in known data leaks, a <a href="/speed-test">bulk website speed test</a> that audits up to 10 URLs at once with Google PageSpeed data, and a <a href="/fake-data-generator">fake data generator</a> that exports realistic mock data as JSON, CSV, or SQL.</p>
+    </details>
+    <details>
+      <summary>How does DevToolbench make money?</summary>
+      <p>Through unobtrusive ads only. The tools run on free public APIs (HaveIBeenPwned, XposedOrNot, Google PageSpeed) and Cloudflare's free hosting tier, so operating costs are minimal and ads cover them. There is no user data to sell — the site has no database and stores nothing you type.</p>
+    </details>
+    <details>
+      <summary>Does it work on mobile devices?</summary>
+      <p>Yes. Every tool is built mobile-first and works in any modern mobile or desktop browser. No apps to install, no browser extensions required.</p>
+    </details>
+    <details>
+      <summary>Do you track me or store my data?</summary>
+      <p>The site sets no first-party cookies and has no database. We run Microsoft Clarity — cookieless, anonymous behavior analytics with all form inputs masked — to understand how the tools are used; it never captures passwords or personal data. Each tool's data handling is documented plainly in the <a href="/privacy-policy">privacy policy</a>.</p>
+    </details>
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Are these developer tools really free?',
+          acceptedAnswer: { '@type': 'Answer', text: 'Yes — every tool on devtoolbench.dev is completely free with no usage limits, no premium tier, and no paywalled features. The site is ad-supported and all features are available to everyone.' },
+        },
+        {
+          '@type': 'Question',
+          name: 'Do I need to create an account or sign up?',
+          acceptedAnswer: { '@type': 'Answer', text: 'No. There is no account system anywhere on the site — nothing to register, no email to verify. Open a tool, use it, close the tab.' },
+        },
+        {
+          '@type': 'Question',
+          name: 'Is it safe to check my password here?',
+          acceptedAnswer: { '@type': 'Answer', text: 'Yes. Your password is hashed (SHA-1) locally in your browser, and only the first 5 characters of that hash are sent to the HaveIBeenPwned API — a privacy technique called k-anonymity. The full password never leaves your device. The email check does send your email address over HTTPS to XposedOrNot to search breach databases.' },
+        },
+        {
+          '@type': 'Question',
+          name: 'What tools are included in DevToolbench?',
+          acceptedAnswer: { '@type': 'Answer', text: 'Three tools: a password and email breach checker, a bulk website speed test that audits up to 10 URLs at once with Google PageSpeed data, and a fake data generator that exports realistic mock data as JSON, CSV, or SQL.' },
+        },
+        {
+          '@type': 'Question',
+          name: 'How does DevToolbench make money?',
+          acceptedAnswer: { '@type': 'Answer', text: 'Through unobtrusive ads only. The tools run on free public APIs and Cloudflare\u2019s free hosting tier, so operating costs are minimal. There is no user data to sell — the site has no database and stores nothing you type.' },
+        },
+        {
+          '@type': 'Question',
+          name: 'Does it work on mobile devices?',
+          acceptedAnswer: { '@type': 'Answer', text: 'Yes. Every tool is built mobile-first and works in any modern mobile or desktop browser. No apps or browser extensions required.' },
+        },
+        {
+          '@type': 'Question',
+          name: 'Do you track me or store my data?',
+          acceptedAnswer: { '@type': 'Answer', text: 'The site sets no first-party cookies and has no database. We run Microsoft Clarity — cookieless, anonymous behavior analytics with all form inputs masked — which never captures passwords or personal data.' },
+        },
+      ],
+    })} />
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'DevToolbench',
+    url: 'https://devtoolbench.dev',
+    description: 'Free online developer tools: breach checker, bulk website speed test, and fake data generator.',
+  })} />
+
+  <style>
+    .hero { padding: 2.5rem 0 1.5rem; }
+    .hero h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.25; margin: 0 0 0.75rem; }
+    .accent { color: var(--good); font-weight: 600; font-size: 0.75em; display: block; margin-top: 0.35rem; }
+    .hero p { color: var(--text-dim); max-width: 44rem; margin: 0; }
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1.5rem 0;
+    }
+    @media (min-width: 48rem) {
+      .cards { grid-template-columns: repeat(3, 1fr); }
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      color: var(--text);
+      transition: border-color 150ms ease;
+    }
+    .card:hover { text-decoration: none; border-color: var(--good); }
+    .card h2 { margin: 0; font-size: 1.125rem; color: var(--good); }
+    .card p { margin: 0; color: var(--text-dim); font-size: 0.9375rem; flex: 1; }
+    .card-tag { font-size: 0.75rem; color: var(--text-dim); }
+    .about { padding: 1.5rem 0; max-width: 44rem; }
+    .about h2 { font-size: 1.25rem; }
+    .about p { color: var(--text-dim); }
+    .site-links { max-width: 46rem; padding: 1.5rem 0; }
+    .site-links h2 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .site-links > p { color: var(--text-dim); max-width: 44rem; }
+    .link-cards { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 1rem; }
+    @media (min-width: 36rem) { .link-cards { grid-template-columns: repeat(2, 1fr); } }
+    .link-card {
+      display: flex; flex-direction: column; gap: 0.375rem;
+      background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.125rem;
+      color: var(--text); transition: border-color 150ms ease;
+    }
+    .link-card:hover { text-decoration: none; border-color: var(--good); }
+    .link-card h3 { margin: 0; font-size: 1rem; color: var(--good); }
+    .link-card p { margin: 0; color: var(--text-dim); font-size: 0.875rem; }
+    .seo-copy { max-width: 46rem; padding: 1rem 0 2.5rem; }
+    .seo-copy h2 { font-size: 1.375rem; margin-top: 1rem; }
+    .seo-copy h3 { font-size: 1.0625rem; margin-top: 1.75rem; color: var(--good); }
+    .seo-copy p { color: var(--text-dim); font-size: 0.9375rem; }
+    .home-faq { max-width: 46rem; padding: 0 0 2.5rem; }
+    .home-faq h2 { font-size: 1.375rem; margin-bottom: 1rem; }
+    .home-faq details {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.875rem 1.125rem;
+      margin-top: 0.5rem;
+    }
+    .home-faq summary { cursor: pointer; font-weight: 600; }
+    .home-faq summary::marker { color: var(--good); }
+    .home-faq p { color: var(--text-dim); font-size: 0.9375rem; }
+  </style>
+</Layout>

@@ -1,0 +1,111 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Page Not Found (404)"
+  description="The page you're looking for doesn't exist on devtoolbench.dev. Head back to the homepage or jump straight to a free developer tool."
+  path="/404"
+  noindex={true}
+>
+  <section class="error-page">
+    <p class="error-code mono" aria-hidden="true">404</p>
+    <h1>Page not found</h1>
+    <p class="error-message">
+      The page you're looking for doesn't exist, was moved, or the URL has a typo.
+      Nothing is broken — just a wrong address.
+    </p>
+
+    <div class="error-actions">
+      <button type="button" id="back-btn" class="btn-secondary">
+        ← Back to previous page
+      </button>
+      <a href="/" class="btn-primary">Go to homepage</a>
+    </div>
+
+    <div class="error-tools">
+      <p class="tools-heading">Or jump straight to a tool:</p>
+      <ul>
+        <li><a href="/breach-checker">Password &amp; email breach checker</a></li>
+        <li><a href="/speed-test">Bulk website speed test</a></li>
+        <li><a href="/fake-data-generator">Fake data generator</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+    const backBtn = document.getElementById('back-btn') as HTMLButtonElement;
+    backBtn.addEventListener('click', () => {
+      if (history.length > 1 && document.referrer !== '') {
+        history.back();
+      } else {
+        // No previous page in this tab — go home instead
+        window.location.href = '/';
+      }
+    });
+  </script>
+
+  <style>
+    .error-page {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 3.5rem 0 4rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .error-code {
+      font-size: clamp(4rem, 14vw, 6.5rem);
+      font-weight: 700;
+      line-height: 1;
+      margin: 0;
+      color: var(--good);
+      text-shadow: 0 0 40px rgba(45, 212, 191, 0.25);
+    }
+    .error-page h1 { font-size: 1.5rem; margin: 0; }
+    .error-message { color: var(--text-dim); margin: 0; max-width: 34rem; }
+    .error-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .btn-primary, .btn-secondary {
+      display: inline-block;
+      padding: 0.625rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--good);
+    }
+    .btn-primary { background: var(--good); color: #04211d; }
+    .btn-primary:hover { text-decoration: none; filter: brightness(1.1); }
+    .btn-secondary { background: transparent; color: var(--good); font-family: var(--sans); }
+    .btn-secondary:hover { background: rgba(45, 212, 191, 0.08); }
+    .error-tools {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      width: 100%;
+    }
+    .tools-heading {
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      margin: 0 0 0.75rem;
+    }
+    .error-tools ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  </style>
+</Layout>

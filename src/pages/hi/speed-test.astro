@@ -1,0 +1,284 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="बल्क वेबसाइट स्पीड टेस्ट — एक साथ कई वेबसाइटों की गति जाँचें (मुफ़्त)"
+  description="मुफ़्त बल्क वेबसाइट स्पीड टेस्ट: Google PageSpeed से एक बैच में 10 वेबसाइटों की गति जाँचें — परफॉरमेंस स्कोर, Core Web Vitals (LCP, CLS, TBT) और हर URL के लिए ठीक करने के सुझाव। लॉगिन नहीं।"
+  path="/speed-test"
+  locale="hi"
+  keywords={[
+    'बल्क वेबसाइट स्पीड टेस्ट',
+    'कई वेबसाइटों की स्पीड टेस्ट',
+    'वेबसाइट स्पीड टेस्ट टूल',
+    'कोर वेब वाइटल्स चेकर',
+    'वेबसाइट परफॉरमेंस टेस्ट',
+  ]}
+>
+  <section class="intro">
+    <h1>बल्क वेबसाइट स्पीड टेस्ट — एक साथ कई साइटें</h1>
+    <p>
+      10 तक URLs पेस्ट करें और सबको एक बार में जाँचें — हर साइट के लिए परफॉरमेंस स्कोर,
+      Core Web Vitals और सबसे असरदार सुधार, एक ही बैच में। एजेंसियों और डेवलपर्स के लिए
+      बनाया गया जो पूरे क्लाइंट पोर्टफोलियो की जाँच करते हैं, एक-एक पेज नहीं।
+    </p>
+  </section>
+
+  <section class="tool">
+    <form id="st-form">
+      <label class="field-label" for="st-urls">हर लाइन में एक URL (अधिकतम 10)</label>
+      <textarea id="st-urls" rows="6" placeholder="example.com&#10;https://another-site.org/page&#10;https://third.net" required></textarea>
+      <div class="row">
+        <button type="submit" id="st-submit">बैच टेस्ट चलाएँ</button>
+        <span id="st-status" class="status mono" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+    <div id="st-results" class="results"></div>
+  </section>
+
+  <!-- Ad slot: in-content — paste your AdSense unit here after approval -->
+  <div class="ad-slot" data-ad-slot="in-content"></div>
+
+  <section class="explainer">
+    <h2>बल्क स्पीड टेस्ट क्यों?</h2>
+    <p>
+      ज़्यादातर मुफ़्त स्पीड टूल्स एक बार में एक URL जाँचते हैं। अगर आप दर्जनों क्लाइंट साइटें
+      संभालते हैं, या रीडिज़ाइन से पहले-बाद अपने पेजों की तुलना करना चाहते हैं, तो एक-URL वाले
+      टूल में दस बार क्लिक करना थकाऊ है। यह टूल बैच चलाता है: 10 तक URLs पेस्ट करें, एक बार
+      सबमिट करें, और हर URL के लिए अलग नतीजा पाएँ — Google PageSpeed परफॉरमेंस स्कोर, रैंकिंग
+      में मायने रखने वाले Core Web Vitals (Largest Contentful Paint, Cumulative Layout Shift,
+      Total Blocking Time), और Lighthouse द्वारा सुझाए गए दो-तीन सबसे असरदार सुधार।
+    </p>
+    <p>
+      जाँच mobile स्ट्रैटेजी पर चलती है, क्योंकि Google इंडेक्सिंग में वही इस्तेमाल करता है।
+      बैच का हर URL अलग-अलग जाँचा जाता है — कोई साइट डाउन हो या उसकी जाँच फेल हो, तो बाकी
+      के नतीजे फिर भी मिलते हैं। URLs इस साइट के अपने सर्वरलेस फ़ंक्शन से होकर Google के
+      PageSpeed Insights API तक जाते हैं; कुछ भी स्टोर नहीं होता।
+    </p>
+    <p class="mono small">https:// छूट जाए तो अपने-आप जुड़ जाता है।</p>
+
+    <h2>अक्सर पूछे जाने वाले प्रश्न</h2>
+    <div class="faq">
+      <details>
+        <summary>प्रति बैच 10 URLs की सीमा क्यों?</summary>
+        <p>
+          हर PageSpeed ऑडिट में कई सेकंड लगते हैं और मुफ़्त API टियर रेट-लिमिटेड है। दस की
+          सीमा हर बैच को तेज़, उचित और सबके लिए मुफ़्त रखती है। ज़्यादा साइटों के लिए कई बैच
+          चलाएँ।
+        </p>
+      </details>
+      <details>
+        <summary>ये वाइटल्स का क्या मतलब है?</summary>
+        <p>
+          <strong>LCP</strong> (Largest Contentful Paint) लोडिंग नापता है: 2.5s से कम अच्छा है।
+          <strong>CLS</strong> (Cumulative Layout Shift) विज़ुअल स्टेबिलिटी नापता है: 0.1 से कम
+          अच्छा है। <strong>TBT</strong> (Total Blocking Time) इंटरैक्टिविटी नापता है: 200ms से
+          कम अच्छा है।
+        </p>
+      </details>
+      <details>
+        <summary>मेरा एक URL फेल हो गया। पूरा बैच क्यों नहीं फेल हुआ?</summary>
+        <p>
+          हर URL स्वतंत्र रूप से जाँचा जाता है और एरर उसी पंक्ति में दिखता है। प्राइवेट, रीडायरेक्ट
+          होता या पहुँच से बाहर URL अपना इनलाइन एरर दिखाता है; बाकी नतीजों पर कोई असर नहीं पड़ता।
+        </p>
+      </details>
+      <details>
+        <summary>क्या मेरे टेस्ट किए URLs स्टोर होते हैं?</summary>
+        <p>
+          नहीं। URLs हमारे सर्वरलेस फ़ंक्शन को जाते हैं, वहाँ से जाँच के लिए Google के PageSpeed
+          API को, और फिर खारिज कर दिए जाते हैं। कोई डेटाबेस नहीं है — विवरण
+          <a href="/privacy-policy">प्राइवेसी पॉलिसी</a> में देखें।
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'hi',
+    mainEntity: [
+      { '@type': 'Question', name: 'प्रति बैच 10 URLs की सीमा क्यों?', acceptedAnswer: { '@type': 'Answer', text: 'हर PageSpeed ऑडिट में कई सेकंड लगते हैं और मुफ़्त API रेट-लिमिटेड है। दस की सीमा बैच को तेज़ और मुफ़्त रखती है।' } },
+      { '@type': 'Question', name: 'ये वाइटल्स का क्या मतलब है?', acceptedAnswer: { '@type': 'Answer', text: 'LCP लोडिंग नापता है (2.5s से कम अच्छा), CLS स्थिरता (0.1 से कम), TBT इंटरैक्टिविटी (200ms से कम)।' } },
+      { '@type': 'Question', name: 'एक URL फेल होने पर पूरा बैच क्यों नहीं फेल होता?', acceptedAnswer: { '@type': 'Answer', text: 'हर URL स्वतंत्र जाँचा जाता है; एरर उसी पंक्ति में दिखता है और बाकी नतीजे बचे रहते हैं।' } },
+      { '@type': 'Question', name: 'क्या URLs स्टोर होते हैं?', acceptedAnswer: { '@type': 'Answer', text: 'नहीं — URLs सर्वरलेस फ़ंक्शन से Google PageSpeed API तक जाकर खारिज हो जाते हैं। कोई डेटाबेस नहीं है।' } },
+    ],
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'बल्क वेबसाइट स्पीड टेस्ट',
+    url: 'https://devtoolbench.dev/hi/speed-test/',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'कोई भी (वेब ब्राउज़र)',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    inLanguage: 'hi',
+    description: 'मुफ़्त बल्क वेबसाइट स्पीड टेस्ट: एक बैच में 10 URLs तक Google PageSpeed ऑडिट — स्कोर, Core Web Vitals और सुधारों के सुझाव।',
+  })} />
+
+  <aside class="related">
+    <h2>DevToolbench के और मुफ़्त टूल्स</h2>
+    <ul>
+      <li><a href="/hi/breach-checker/">पासवर्ड ब्रीच चेकर — जानें आपका ईमेल हैक हुआ या नहीं</a></li>
+      <li><a href="/hi/fake-data-generator/">मॉक डेटा जेनरेटर — फेक JSON, CSV और SQL टेस्ट डेटा</a></li>
+    </ul>
+  </aside>
+
+  <script>
+    const MSG = {
+      enterUrl: 'कम से कम एक मान्य URL दर्ज करें।',
+      tooMany: (max: number, n: number) => `प्रति बैच अधिकतम ${max} URLs — आपने ${n} दिए हैं। ${n - max} हटाएँ।`,
+      testing: 'जाँच जारी… इसमें एक मिनट तक लग सकता है।',
+      failed: (m: string) => `असफल: ${m}`,
+      queued: 'कतार में → जाँच जारी…',
+      invalid: 'अमान्य URL।',
+      rateLimited: 'PageSpeed API की रेट लिमिट। थोड़ी देर में फिर कोशिश करें।',
+      apiFail: 'PageSpeed API से संपर्क नहीं हुआ।',
+      notLocal: 'स्पीड-टेस्ट बैकएंड केवल तैनात (deployed) साइट पर चलता है (Cloudflare Pages)। स्थानीय रूप से टेस्ट करने के लिए: .dev.vars.example देखकर अपनी PageSpeed API key डालें और npm run preview:pages चलाएँ।',
+      noResult: 'इस URL का ऑडिट नतीजा नहीं मिला।',
+      testFail: 'जाँच असफल',
+    };
+
+    const form = document.getElementById('st-form') as HTMLFormElement;
+    const textarea = document.getElementById('st-urls') as HTMLTextAreaElement;
+    const submitBtn = document.getElementById('st-submit') as HTMLButtonElement;
+    const statusEl = document.getElementById('st-status')!;
+    const resultsEl = document.getElementById('st-results')!;
+    const MAX_URLS = 10;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const urls = normalizeUrls(textarea.value);
+      if (urls.length === 0) { statusEl.textContent = MSG.enterUrl; return; }
+      if (urls.length > MAX_URLS) { statusEl.textContent = MSG.tooMany(MAX_URLS, urls.length); return; }
+      submitBtn.disabled = true;
+      statusEl.textContent = MSG.testing;
+      resultsEl.innerHTML = renderQueued(urls);
+      try {
+        const res = await fetch('/api/speed-check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urls }),
+        });
+        if (res.status === 404) {
+          statusEl.textContent = MSG.notLocal;
+          resultsEl.innerHTML = '';
+          return;
+        }
+        if (!res.ok) {
+          const detail = await res.json().catch(() => null);
+          throw new Error(detail?.error || `Server ${res.status}`);
+        }
+        renderResults(await res.json());
+        statusEl.textContent = '';
+      } catch (err) {
+        statusEl.textContent = MSG.failed((err as Error).message);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    function normalizeUrls(value: string): string[] {
+      return value
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0)
+        .map((line) => (/^https?:\/\//i.test(line) ? line : `https://${line}`))
+        .filter((line) => {
+          try {
+            const u = new URL(line);
+            return !!u.hostname && u.hostname.includes('.');
+          } catch { return false; }
+        });
+    }
+
+    interface RowResult {
+      url: string; ok: boolean; score?: number; lcp?: string; cls?: string; tbt?: string;
+      opportunities?: string[]; error?: string;
+    }
+
+    function renderQueued(urls: string[]): string {
+      return urls.map((url) => `
+        <div class="result-row queued">
+          <div class="url mono">${escapeHtml(url)}</div>
+          <div class="row-state mono">${MSG.queued}</div>
+        </div>`).join('');
+    }
+
+    function renderResults(results: RowResult[]): void {
+      resultsEl.innerHTML = results.map(renderRow).join('');
+    }
+
+    function renderRow(r: RowResult): string {
+      const urlLine = `<div class="url mono">${escapeHtml(r.url)}</div>`;
+      if (!r.ok) {
+        return `<div class="result-row error">${urlLine}<div class="row-state mono">${escapeHtml(r.error || MSG.testFail)}</div></div>`;
+      }
+      const scoreColor = r.score! >= 90 ? 'good' : r.score! >= 50 ? 'warn' : 'bad';
+      const opps = (r.opportunities ?? []).map((o) => `<li>${escapeHtml(o)}</li>`).join('');
+      return `
+        <div class="result-row done">
+          ${urlLine}
+          <div class="metrics">
+            <div class="score ${scoreColor} mono">${r.score}<span class="unit">/100</span></div>
+            <div class="vitals mono">
+              <span>LCP <strong>${escapeHtml(r.lcp ?? '—')}</strong></span>
+              <span>CLS <strong>${escapeHtml(r.cls ?? '—')}</strong></span>
+              <span>TBT <strong>${escapeHtml(r.tbt ?? '—')}</strong></span>
+            </div>
+          </div>
+          ${opps ? `<ul class="opps">${opps}</ul>` : ''}
+        </div>`;
+    }
+
+    function escapeHtml(s: string): string {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+  </script>
+
+  <style>
+    .intro { padding: 2rem 0 0.5rem; }
+    .intro h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .intro p { color: var(--text-dim); max-width: 44rem; margin: 0; }
+    .tool { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0; }
+    .field-label { display: block; font-size: 0.875rem; margin-bottom: 0.375rem; color: var(--text-dim); }
+    textarea { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; color: var(--text); font-family: var(--mono); font-size: 0.875rem; resize: vertical; }
+    .row { display: flex; align-items: center; gap: 1rem; margin-top: 0.75rem; flex-wrap: wrap; }
+    .row button { background: var(--good); color: #04211d; border: none; border-radius: 6px; padding: 0.625rem 1.25rem; font-weight: 600; cursor: pointer; }
+    .row button:hover { filter: brightness(1.1); }
+    .row button:disabled { opacity: 0.6; cursor: wait; }
+    .status { font-size: 0.8125rem; color: var(--text-dim); }
+    .results { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .result-row { background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px; padding: 0.875rem 1rem; }
+    .result-row.queued .row-state { color: var(--text-dim); animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: 0.4; } }
+    .result-row.error { border-color: var(--bad); }
+    .result-row.error .row-state { color: var(--bad); }
+    .url { font-size: 0.8125rem; word-break: break-all; margin-bottom: 0.5rem; color: var(--text); }
+    .metrics { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+    .score { font-size: 1.5rem; font-weight: 700; }
+    .score .unit { font-size: 0.75rem; font-weight: 400; color: var(--text-dim); }
+    .score.good { color: var(--good); }
+    .score.warn { color: var(--warn); }
+    .score.bad { color: var(--bad); }
+    .vitals { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8125rem; color: var(--text-dim); }
+    .vitals strong { color: var(--text); }
+    .opps { margin: 0.75rem 0 0; padding-left: 1.25rem; color: var(--text-dim); font-size: 0.875rem; }
+    .explainer { max-width: 46rem; padding: 1rem 0 2rem; }
+    .explainer h2 { font-size: 1.25rem; margin-top: 2rem; }
+    .explainer p { color: var(--text-dim); font-size: 0.9375rem; }
+    .explainer .small { font-size: 0.8125rem; }
+    .faq details { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.5rem; }
+    .faq summary { font-weight: 600; }
+    .faq summary::marker { color: var(--good); }
+    .faq p { color: var(--text-dim); font-size: 0.9375rem; }
+    .related { max-width: 46rem; margin: 0 0 2rem; padding: 1rem 1.25rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; }
+    .related h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+    .related ul { margin: 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .related li { margin: 0.25rem 0; }
+  </style>
+</Layout>

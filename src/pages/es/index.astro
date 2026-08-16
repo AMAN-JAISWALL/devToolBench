@@ -1,0 +1,126 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="DevToolbench — Herramientas gratis para desarrolladores"
+  description="Colección gratis de herramientas para desarrolladores de devtoolbench.dev: comprueba si tu contraseña o correo aparece en filtraciones conocidas, mide la velocidad de hasta 10 webs a la vez y genera datos falsos en JSON, CSV o SQL. Sin registro."
+  path="/"
+  locale="es"
+  keywords={[
+    'herramientas para desarrolladores gratis',
+    'herramientas online dev',
+    'comprobador de filtraciones',
+    'test de velocidad web',
+    'generador de datos falsos',
+  ]}
+>
+  <section class="hero">
+    <h1>Herramientas gratis para devs. <span class="mono accent">Sin registro. Sin complicaciones.</span></h1>
+    <p>
+      Tres utilidades rápidas y respetuosas con la privacidad que funcionan en tu navegador o a través
+      de un pequeño proxy serverless, construidas sobre APIs públicas gratuitas. Ninguna requiere
+      cuenta ni registro.
+    </p>
+  </section>
+
+  <section class="cards" aria-label="Herramientas">
+    <a class="card" href="/es/breach-checker/">
+      <h2>Comprobador de filtraciones</h2>
+      <p>Comprueba si tu contraseña o correo aparece en filtraciones conocidas — la contraseña se hashea localmente y nunca sale de tu navegador.</p>
+      <span class="card-tag mono">sha1 · k-anonimato</span>
+    </a>
+    <a class="card" href="/es/speed-test/">
+      <h2>Test de velocidad en lote</h2>
+      <p>Analiza hasta 10 webs a la vez con Google PageSpeed — puntuaciones de rendimiento, Core Web Vitals y mejoras principales en un solo lote.</p>
+      <span class="card-tag mono">lighthouse · lote</span>
+    </a>
+    <a class="card" href="/es/fake-data-generator/">
+      <h2>Generador de datos falsos</h2>
+      <p>Genera hasta 1.000 filas de datos mock realistas — nombres, correos, direcciones, UUID — exportados como JSON, CSV o SQL. 100% local.</p>
+      <span class="card-tag mono">faker · export</span>
+    </a>
+  </section>
+
+  <section class="about">
+    <h2>¿Por qué es gratis?</h2>
+    <p>
+      Porque las herramientas de desarrollo no deberían requerir tarjeta de crédito. Se basan en APIs
+      públicas gratuitas (HaveIBeenPwned, XposedOrNot, Google PageSpeed) y librerías de código
+      abierto, alojadas en el nivel gratuito de Cloudflare. La publicidad cubre los costes de
+      hosting. Ese es todo el modelo de negocio.
+    </p>
+  </section>
+
+  <section class="site-links">
+    <h2>Sobre DevToolbench</h2>
+    <p>
+      DevToolbench es un toolkit gratuito con publicidad, creado por desarrolladores para
+      desarrolladores. Sin cuentas, sin rastreo, sin muros de pago — solo utilidades rápidas que
+      hacen bien una sola cosa.
+    </p>
+    <div class="link-cards">
+      <a class="link-card" href="/about">
+        <h3>Quiénes somos</h3>
+        <p>Quién lo construyó, por qué es gratis y cómo abordamos la privacidad y la transparencia.</p>
+      </a>
+      <a class="link-card" href="/contact">
+        <h3>Contacto</h3>
+        <p>Reporta un error, sugiere una función o pregunta sobre cualquiera de las herramientas.</p>
+      </a>
+      <a class="link-card" href="/privacy-policy">
+        <h3>Política de privacidad</h3>
+        <p>Qué hace cada herramienta con tus datos, explicado con honestidad, herramienta por herramienta.</p>
+      </a>
+      <a class="link-card" href="/terms">
+        <h3>Términos y condiciones</h3>
+        <p>Las reglas para usar el sitio — breves, en lenguaje claro y sin sorpresas.</p>
+      </a>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'DevToolbench',
+    url: 'https://devtoolbench.dev/es/',
+    inLanguage: 'es',
+    description: 'Herramientas online gratis para desarrolladores: comprobador de filtraciones, test de velocidad en lote y generador de datos falsos.',
+  })} />
+
+  <style>
+    .hero { padding: 2.5rem 0 1.5rem; }
+    .hero h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.25; margin: 0 0 0.75rem; }
+    .accent { color: var(--good); font-weight: 600; font-size: 0.75em; display: block; margin-top: 0.35rem; }
+    .hero p { color: var(--text-dim); max-width: 44rem; margin: 0; }
+    .cards { display: grid; grid-template-columns: 1fr; gap: 1rem; padding: 1.5rem 0; }
+    @media (min-width: 48rem) { .cards { grid-template-columns: repeat(3, 1fr); } }
+    .card {
+      display: flex; flex-direction: column; gap: 0.5rem;
+      background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem; color: var(--text);
+      transition: border-color 150ms ease;
+    }
+    .card:hover { text-decoration: none; border-color: var(--good); }
+    .card h2 { margin: 0; font-size: 1.125rem; color: var(--good); }
+    .card p { margin: 0; color: var(--text-dim); font-size: 0.9375rem; flex: 1; }
+    .card-tag { font-size: 0.75rem; color: var(--text-dim); }
+    .about { padding: 1.5rem 0; max-width: 44rem; }
+    .about h2 { font-size: 1.25rem; }
+    .about p { color: var(--text-dim); }
+    .site-links { max-width: 46rem; padding: 1.5rem 0; }
+    .site-links h2 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .site-links > p { color: var(--text-dim); max-width: 44rem; }
+    .link-cards { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 1rem; }
+    @media (min-width: 36rem) { .link-cards { grid-template-columns: repeat(2, 1fr); } }
+    .link-card {
+      display: flex; flex-direction: column; gap: 0.375rem;
+      background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.125rem; color: var(--text);
+      transition: border-color 150ms ease;
+    }
+    .link-card:hover { text-decoration: none; border-color: var(--good); }
+    .link-card h3 { margin: 0; font-size: 1rem; color: var(--good); }
+    .link-card p { margin: 0; color: var(--text-dim); font-size: 0.875rem; }
+  </style>
+</Layout>

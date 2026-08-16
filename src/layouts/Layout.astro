@@ -1,0 +1,683 @@
+---
+import { languages } from '../data/languages';
+import {
+  defaultLocale,
+  isTranslatedPath,
+  localizedPath,
+  locales,
+  ogLocales,
+  stripLocale,
+  type Locale,
+} from '../i18n/config';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path without trailing slash and without locale prefix, e.g. "/breach-checker". */
+  path?: string;
+  /** Main + supporting SEO keywords for this page. */
+  keywords?: string[];
+  /** Set true on pages that must not be indexed (e.g. 404). */
+  noindex?: boolean;
+  /** Page locale — 'en' (default), 'hi', 'es'. */
+  locale?: Locale;
+}
+
+const { title, description, path = '/', keywords = [], noindex = false, locale = defaultLocale } = Astro.props;
+const site = Astro.site ?? new URL('https://devtoolbench.dev');
+const pageTitle = path === '/' ? title : `${title} | DevToolbench`;
+// Canonical must match the built URL exactly (Cloudflare serves /page/ from
+// directory builds and 308s /page → /page/), so tool pages keep the slash.
+const canonical = new URL(localizedPath(locale, path), site).href;
+const langCodesCSV = languages.map((l) => l.code).join(',');
+
+// hreflang cluster — only for paths translated in every locale.
+const basePath = stripLocale(path);
+const hasCluster = isTranslatedPath(basePath);
+const alternates = hasCluster
+  ? locales.map((l) => ({ code: l === 'en' ? 'en' : l, href: new URL(localizedPath(l, basePath), site).href }))
+  : [];
+
+// Locale-aware chrome strings.
+const ui = {
+  en: {
+    navTools: [
+      { href: '/', label: 'Home' },
+      { href: '/breach-checker', label: 'Breach Checker' },
+      { href: '/speed-test', label: 'Speed Test' },
+      { href: '/fake-data-generator', label: 'Data Generator' },
+    ],
+    navSite: [
+      { href: '/about', label: 'About' },
+      { href: '/contact', label: 'Contact' },
+    ],
+    footer: {
+      tools: 'Tools', company: 'Company', legal: 'Legal',
+      breach: 'Breach Checker', speed: 'Speed Test', gen: 'Data Generator',
+      about: 'About Us', contact: 'Contact Us', privacy: 'Privacy Policy', terms: 'Terms & Conditions',
+      note: 'devtoolbench.dev — built on free public APIs. No accounts, no personal data collection.',
+    },
+  },
+  hi: {
+    navTools: [
+      { href: '/', label: 'होम' },
+      { href: '/breach-checker', label: 'ब्रीच चेकर' },
+      { href: '/speed-test', label: 'स्पीड टेस्ट' },
+      { href: '/fake-data-generator', label: 'डेटा जेनरेटर' },
+    ],
+    navSite: [
+      { href: '/about', label: 'हमारे बारे में' },
+      { href: '/contact', label: 'संपर्क करें' },
+    ],
+    footer: {
+      tools: 'टूल्स', company: 'कंपनी', legal: 'कानूनी',
+      breach: 'ब्रीच चेकर', speed: 'स्पीड टेस्ट', gen: 'डेटा जेनरेटर',
+      about: 'हमारे बारे में', contact: 'संपर्क करें', privacy: 'प्राइवेसी पॉलिसी', terms: 'नियम और शर्तें',
+      note: 'devtoolbench.dev — मुफ़्त सार्वजनिक APIs पर बना। कोई खाता नहीं, कोई व्यक्तिगत डेटा संग्रह नहीं।',
+    },
+  },
+  es: {
+    navTools: [
+      { href: '/', label: 'Inicio' },
+      { href: '/breach-checker', label: 'Filtraciones' },
+      { href: '/speed-test', label: 'Test de velocidad' },
+      { href: '/fake-data-generator', label: 'Datos falsos' },
+    ],
+    navSite: [
+      { href: '/about', label: 'Acerca de' },
+      { href: '/contact', label: 'Contacto' },
+    ],
+    footer: {
+      tools: 'Herramientas', company: 'Empresa', legal: 'Legal',
+      breach: 'Comprobador de filtraciones', speed: 'Test de velocidad', gen: 'Generador de datos',
+      about: 'Quiénes somos', contact: 'Contacto', privacy: 'Política de privacidad', terms: 'Términos y condiciones',
+      note: 'devtoolbench.dev — construido sobre APIs públicas gratuitas. Sin cuentas, sin recopilación de datos personales.',
+    },
+  },
+} as const;
+const t = ui[locale];
+
+// Tool pages link to their localized versions; untranslated pages stay English.
+const navHref = (href: string) =>
+  isTranslatedPath(href) && locale !== defaultLocale ? localizedPath(locale, href) : href;
+const current = (href: string) => (href === path ? 'page' : undefined);
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0d1522" />
+    <!-- Microsoft Clarity — cookieless behavior analytics (inputs masked).
+         Guarded to load ONLY on the production domain; localhost, *.pages.dev
+         preview deployments, and any other test host are excluded. -->
+    <script is:inline>
+      (function () {
+        if (!/^(www\.)?devtoolbench\.dev$/i.test(location.hostname)) return;
+        (function (c, l, a, r, i, t, y) {
+          c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+          t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+          y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "y3euw24xzj");
+      })();
+    </script>
+    <!-- Google AdSense — AFTER your site is approved:
+         1. Replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID below AND in ads.txt
+         2. Uncomment the script and meta tag
+         3. Create ad units in AdSense and paste their <ins> code into the
+            data-ad-slot divs in this layout and on tool pages
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX" />
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DevToolbench" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og-image.png', site).href} />
+    <meta property="og:image:secure_url" content={new URL('/og-image.png', site).href} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="DevToolbench — free developer tools: breach checker, bulk speed test, fake data generator" />
+    <meta property="og:locale" content={ogLocales[locale]} />
+    {hasCluster && locales.filter((l) => l !== locale).map((l) => (
+      <meta property="og:locale:alternate" content={ogLocales[l]} />
+    ))}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@devtoolbench" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL('/og-image.png', site).href} />
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.code} href={a.href} />
+    ))}
+    {hasCluster && <link rel="alternate" hreflang="x-default" href={new URL(localizedPath(defaultLocale, basePath), site).href} />}
+    <style is:global>
+      :root {
+        --bg: #0d1522;
+        --bg-raised: #131e30;
+        --bg-input: #0a111d;
+        --border: #26344b;
+        --text: #dce4f0;
+        --text-dim: #8fa1b8;
+        --good: #2dd4bf;
+        --warn: #fbbf24;
+        --bad: #f87171;
+        --mono: ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+        --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html { color-scheme: dark; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
+        font-size: 1rem;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--good); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      :focus-visible {
+        outline: 2px solid var(--good);
+        outline-offset: 2px;
+        border-radius: 2px;
+      }
+      code, pre, .mono { font-family: var(--mono); }
+      pre {
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        overflow-x: auto;
+        font-size: 0.875rem;
+        line-height: 1.5;
+      }
+      .container { max-width: 60rem; margin: 0 auto; padding: 0 1rem; }
+      .ad-slot {
+        min-height: 0;
+        margin: 1.5rem 0;
+        border: 1px dashed var(--border);
+        border-radius: 8px;
+      }
+      /* Hide Google Translate default UI. MUST live in this global block:
+         Astro-scoped selectors never match GT's injected elements. */
+      .skiptranslate, .goog-te-banner-frame { display: none !important; }
+      body { top: 0 !important; }
+
+      /* Language dropdown options. MUST be global for two reasons:
+         1. The <li> rows are created by JS and never get Astro's scoping
+            attribute, so scoped selectors silently never match them.
+         2. display:block overrides the nav's `nav ul { display: flex }`
+            row layout, which was forcing every option onto one line. */
+      .lang-list { display: block; }
+      .lang-list li {
+        display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
+        padding: 0.5rem 0.75rem; border-radius: 8px; cursor: pointer;
+        font-size: 0.9375rem; line-height: 1.25; color: var(--text-dim);
+        transition: background 100ms ease, color 100ms ease;
+      }
+      .lang-list li:hover { background: var(--bg-input); color: var(--text); }
+      .lang-list li .native {
+        flex: 1 1 auto; min-width: 0;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .lang-list li .check { width: 15px; height: 15px; flex-shrink: 0; color: var(--good); }
+      .lang-list li.active { color: var(--good); background: rgba(45, 212, 191, 0.08); }
+      .lang-list li.lang-section {
+        cursor: default; pointer-events: none;
+        padding: 0.75rem 0.75rem 0.25rem;
+        font-size: 0.6875rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.08em;
+        color: var(--text-dim); opacity: 0.7;
+        background: transparent;
+      }
+      .lang-list li.lang-section:first-child { padding-top: 0.5rem; }
+      .lang-list li.no-match {
+        cursor: default; opacity: 0.55; font-style: italic;
+        justify-content: center; padding: 1.25rem 0.5rem; gap: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand mono" href="/">dev<span class="brand-accent">toolbench</span></a>
+        <nav aria-label="Main navigation">
+          <ul class="nav-tools">
+            {t.navTools.map((item) => (
+              <li>
+                <a href={navHref(item.href)} aria-current={current(item.href)} class="nav-link">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <ul class="nav-site">
+            {t.navSite.map((item) => (
+              <li>
+                <a href={item.href} aria-current={current(item.href)} class="nav-link">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="lang-wrap">
+            <button class="lang-btn notranslate" translate="no" id="lang-toggle" aria-label="Change language" aria-expanded="false">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><ellipse cx="8" cy="8" rx="3" ry="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.8 8h12.4M2.6 4.5h10.8M2.6 11.5h10.8" stroke="currentColor" stroke-width="1.1"/></svg>
+              <span id="lang-label">EN</span>
+              <svg class="chev" width="10" height="10" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="lang-panel notranslate" translate="no" id="lang-panel">
+              <input type="text" id="lang-search" class="lang-search" placeholder="Search language…" autocomplete="off" />
+              <ul class="lang-list" id="lang-list" role="listbox" aria-label="Select language"></ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Ad slot: header — paste your AdSense <ins class="adsbygoogle"> unit here after approval -->
+    <div class="ad-slot container" data-ad-slot="header"></div>
+
+    <main class="container">
+      <slot />
+    </main>
+
+    <!-- Ad slot: footer — paste your AdSense <ins class="adsbygoogle"> unit here after approval -->
+    <div class="ad-slot container" data-ad-slot="footer"></div>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <div class="footer-col">
+            <p class="footer-heading">{t.footer.tools}</p>
+            <ul>
+              <li><a href={navHref('/breach-checker')}>{t.footer.breach}</a></li>
+              <li><a href={navHref('/speed-test')}>{t.footer.speed}</a></li>
+              <li><a href={navHref('/fake-data-generator')}>{t.footer.gen}</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <p class="footer-heading">{t.footer.company}</p>
+            <ul>
+              <li><a href="/about">{t.footer.about}</a></li>
+              <li><a href="/contact">{t.footer.contact}</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <p class="footer-heading">{t.footer.legal}</p>
+            <ul>
+              <li><a href="/privacy-policy">{t.footer.privacy}</a></li>
+              <li><a href="/terms">{t.footer.terms}</a></li>
+            </ul>
+          </div>
+        </nav>
+        <p class="footer-note">{t.footer.note}</p>
+      </div>
+    </footer>
+
+    <style>
+      .site-header {
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-raised);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .header-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.5rem;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+      }
+      .brand { font-weight: 700; font-size: 1.125rem; color: var(--text); }
+      .brand:hover { text-decoration: none; }
+      .brand-accent { color: var(--good); }
+      nav { display: flex; align-items: center; flex-wrap: wrap; gap: 0.25rem; }
+      nav ul {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        margin: 0;
+        padding: 0;
+      }
+      .nav-tools { border-right: 1px solid var(--border); padding-right: 0.5rem; margin-right: 0.25rem; }
+      .nav-link {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        border-radius: 6px;
+        color: var(--text-dim);
+        font-size: 0.9375rem;
+      }
+      .nav-link:hover { color: var(--text); text-decoration: none; background: var(--bg-input); }
+      .nav-link[aria-current="page"] { color: var(--good); background: var(--bg-input); }
+      .site-footer {
+        border-top: 1px solid var(--border);
+        margin-top: 3rem;
+        padding: 2rem 0;
+        color: var(--text-dim);
+        font-size: 0.875rem;
+      }
+      .footer-inner { text-align: center; }
+      .footer-nav {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+      .footer-col { text-align: left; }
+      .footer-heading {
+        font-weight: 600;
+        color: var(--text);
+        margin: 0 0 0.5rem;
+        font-size: 0.8125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .footer-col ul {
+        list-style: none; padding: 0; margin: 0;
+        display: flex; flex-direction: column; gap: 0.25rem;
+      }
+      .footer-col a { color: var(--text-dim); font-size: 0.875rem; }
+      .footer-col a:hover { color: var(--good); }
+      .footer-note { margin: 0; opacity: 0.8; }
+
+      /* Language selector */
+      .lang-wrap { position: relative; margin-left: 0.375rem; }
+      .lang-btn {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        padding: 0.4rem 0.7rem; border-radius: 999px;
+        border: 1px solid var(--border); background: var(--bg-input);
+        color: var(--text-dim); font-size: 0.8125rem;
+        font-family: var(--mono); font-weight: 600; letter-spacing: 0.02em;
+        cursor: pointer; white-space: nowrap;
+        transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+      }
+      .lang-btn:hover { color: var(--text); border-color: var(--good); }
+      .lang-btn[aria-expanded="true"] { color: var(--good); border-color: var(--good); background: rgba(45, 212, 191, 0.08); }
+      .lang-btn svg { flex-shrink: 0; }
+      .lang-btn .chev { transition: transform 200ms ease; opacity: 0.7; }
+      .lang-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+      .lang-panel {
+        position: absolute; top: calc(100% + 0.625rem); right: 0;
+        width: min(21rem, calc(100vw - 2rem));
+        background: rgba(19, 30, 48, 0.96);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border); border-radius: 12px;
+        display: flex; flex-direction: column; overflow: hidden;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(45, 212, 191, 0.06);
+        opacity: 0; visibility: hidden; transform: translateY(-6px) scale(0.98);
+        transform-origin: top right;
+        transition: opacity 160ms ease, transform 160ms ease, visibility 0s 160ms;
+        z-index: 50;
+      }
+      .lang-panel.open {
+        opacity: 1; visibility: visible; transform: translateY(0) scale(1);
+        transition: opacity 160ms ease, transform 160ms ease, visibility 0s 0s;
+      }
+
+      .lang-search {
+        margin: 0; padding: 0.7rem 0.9rem;
+        border: none; border-bottom: 1px solid var(--border); border-radius: 0;
+        background: transparent; color: var(--text);
+        font-size: 0.875rem; font-family: var(--sans); outline: none;
+        flex-shrink: 0;
+      }
+      .lang-search::placeholder { color: var(--text-dim); opacity: 0.65; }
+      .lang-search:focus { background: rgba(45, 212, 191, 0.04); }
+
+      .lang-list {
+        list-style: none; margin: 0; padding: 0.375rem;
+        overflow-y: auto; overscroll-behavior: contain;
+        max-height: min(18rem, 55vh);
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+      }
+      .lang-list::-webkit-scrollbar { width: 8px; }
+      .lang-list::-webkit-scrollbar-track { background: transparent; }
+      .lang-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+      .lang-list::-webkit-scrollbar-thumb:hover { background: #33455f; }
+
+      /* Option-row styles live in the global block in <head>: the <li>s are
+         created by JS at runtime and never get the scoping attribute, so
+         scoped selectors silently never match them. */
+
+      /* Mobile: panel spans the header width instead of the tiny button */
+      @media (max-width: 48rem) {
+        .lang-wrap { position: static; }
+        .lang-panel {
+          left: 0; right: 0; width: auto;
+          top: calc(100% + 0.5rem);
+          transform-origin: top center;
+        }
+        .site-header { position: sticky; }
+        .lang-list { max-height: min(16rem, 50vh); }
+      }
+
+      /* Google Translate chrome is hidden via the global rules in <head> —
+         scoped selectors here would never match GT's injected elements. */
+      #google_translate_element { display: none !important; }
+    </style>
+
+    <!-- Google Translate (hidden — driven by our custom dropdown) -->
+    <div id="google_translate_element" aria-hidden="true"></div>
+    <script is:inline>
+      // Native locale pages carry their own translation — clear any widget
+      // cookie BEFORE element.js loads (deferred module scripts run after it).
+      if (/^\/(hi|es)(\/|$)/.test(location.pathname)) {
+        document.cookie = 'googtrans=;path=/;max-age=0';
+        document.cookie = 'googtrans=;path=/;domain=' + location.hostname + ';max-age=0';
+      }
+    </script>
+    <script is:inline define:vars={{ langCodesCSV }}>
+      // define:vars wraps this in an IIFE, so attach the callback to window
+      // explicitly — element.js looks for it in global scope.
+      window.googleTranslateElementInit = function () {
+        new google.translate.TranslateElement(
+          { pageLanguage: 'en', autoDisplay: false, includedLanguages: langCodesCSV },
+          'google_translate_element'
+        );
+      };
+    </script>
+    <script is:inline src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
+
+    <script>
+      import { languages } from '../data/languages';
+
+      const STORAGE_KEY = 'dtb-lang';
+      const toggle = document.getElementById('lang-toggle') as HTMLButtonElement;
+      const panel = document.getElementById('lang-panel') as HTMLDivElement;
+      const searchInput = document.getElementById('lang-search') as HTMLInputElement;
+      const list = document.getElementById('lang-list') as HTMLUListElement;
+      const labelEl = document.getElementById('lang-label') as HTMLSpanElement;
+      let activeCode = localStorage.getItem(STORAGE_KEY) || 'en';
+
+      // Locales with native site translations surface first.
+      const COMMON = ['en', 'hi', 'es'];
+
+      function rowHtml(lang: (typeof languages)[number]): string {
+        const active = lang.code === activeCode;
+        const check = active
+          ? '<svg class="check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+          : '';
+        return (
+          `<li role="option" data-code="${lang.code}"${active ? ' class="active"' : ''}>` +
+          `<span class="native" title="${lang.name}">${lang.native}</span>${check}</li>`
+        );
+      }
+
+      function renderList(filter = '') {
+        const q = filter.toLowerCase();
+        const matches = (l: (typeof languages)[number]) =>
+          !q ||
+          l.name.toLowerCase().includes(q) ||
+          l.native.toLowerCase().includes(q) ||
+          l.code.toLowerCase().includes(q);
+
+        const common = languages.filter((l) => COMMON.includes(l.code) && matches(l));
+        const rest = languages
+          .filter((l) => !COMMON.includes(l.code) && matches(l))
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        list.innerHTML = '';
+        if (common.length === 0 && rest.length === 0) {
+          const li = document.createElement('li');
+          li.className = 'no-match';
+          li.textContent = 'No language found';
+          list.appendChild(li);
+          return;
+        }
+        if (common.length > 0) {
+          list.insertAdjacentHTML(
+            'beforeend',
+            '<li class="lang-section" aria-hidden="true">Translated site</li>' + common.map(rowHtml).join('')
+          );
+        }
+        if (rest.length > 0) {
+          list.insertAdjacentHTML(
+            'beforeend',
+            '<li class="lang-section" aria-hidden="true">All languages</li>' + rest.map(rowHtml).join('')
+          );
+        }
+        list.querySelectorAll<HTMLElement>('li[role="option"]').forEach((li) => {
+          const code = li.dataset.code!;
+          li.addEventListener('click', () => selectLang(code));
+        });
+      }
+      function setGTCookie(code: string) {
+        // GT reads the googtrans cookie on init; set it for the host and the
+        // domain variant, because GT builds differ in which one they check.
+        const value = code === 'en' ? '' : `/auto/${code}`;
+        const maxAge = code === 'en' ? 'max-age=0' : 'max-age=31536000;SameSite=Lax';
+        document.cookie = `googtrans=${value};path=/;${maxAge}`;
+        document.cookie = `googtrans=${value};path=/;domain=${location.hostname};${maxAge}`;
+      }
+
+      function selectLang(code: string) {
+        activeCode = code;
+        localStorage.setItem(STORAGE_KEY, code);
+        closePanel();
+        const lang = languages.find((l) => l.code === code);
+        labelEl.textContent = lang ? lang.code.toUpperCase() : code.toUpperCase();
+        document.documentElement.lang = code;
+
+        // Locales with real translated pages: navigate to the native version.
+        const native = ['en', 'hi', 'es'];
+        const base = stripLocalePath(location.pathname);
+        if (native.includes(code) && isTranslated(base)) {
+          // Clear any widget translation — the native page is authoritative.
+          setGTCookie('en');
+          location.href = localized(code, base);
+          return;
+        }
+        // Everything else: Google Translate on the English version.
+        setGTCookie(code);
+        const onLocalized = location.pathname.startsWith('/hi/') || location.pathname.startsWith('/es/');
+        if (onLocalized) {
+          location.href = localized('en', base); // GT translates from English
+        } else {
+          location.reload();
+        }
+      }
+
+      function openPanel() {
+        panel.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+        searchInput.value = '';
+        renderList();
+        requestAnimationFrame(() => searchInput.focus());
+      }
+      function closePanel() {
+        panel.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+
+      toggle.addEventListener('click', () =>
+        panel.classList.contains('open') ? closePanel() : openPanel()
+      );
+      document.addEventListener('click', (e) => {
+        if (!toggle.contains(e.target as Node) && !panel.contains(e.target as Node)) closePanel();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
+      });
+      searchInput.addEventListener('input', () => renderList(searchInput.value));
+
+      // Show stored language code in button
+      const saved = languages.find((l) => l.code === activeCode);
+      if (saved) labelEl.textContent = saved.code.toUpperCase();
+
+      // ---- Locale helpers (mirror src/i18n/config.ts for the client) ----
+      function stripLocalePath(p: string): string {
+        for (const l of ['hi', 'es']) {
+          if (p === `/${l}` || p === `/${l}/`) return '/';
+          if (p.startsWith(`/${l}/`)) return p.slice(l.length + 1);
+        }
+        return p;
+      }
+      function localized(locale: string, base: string): string {
+        const p = base === '/' ? '/' : base.replace(/\/$/, '') + '/';
+        return locale === 'en' ? p : `/${locale}${p === '/' ? '/' : p}`;
+      }
+      function isTranslated(base: string): boolean {
+        const b = base === '' || base === '/' ? '/' : base.replace(/\/$/, '');
+        return ['/', '/breach-checker', '/speed-test', '/fake-data-generator'].includes(b);
+      }
+
+      // Auto-apply stored language on page load. Native locale pages are already
+      // translated — clear the widget cookie so GT doesn't machine-translate
+      // them on top of the authored translation.
+      const onNativeLocale = location.pathname.startsWith('/hi/') || location.pathname.startsWith('/es/');
+      if (onNativeLocale) {
+        setGTCookie('en');
+      } else if (activeCode !== 'en') {
+        setGTCookie(activeCode);
+        document.documentElement.lang = activeCode;
+        // GT initializes asynchronously; once its hidden combo appears, make
+        // sure it actually reflects the stored language (drive it directly).
+        let tries = 0;
+        const poll = setInterval(() => {
+          const combo = document.querySelector('select.goog-te-combo') as HTMLSelectElement | null;
+          tries++;
+          if (combo) {
+            if (combo.value !== activeCode) {
+              combo.value = activeCode;
+              combo.dispatchEvent(new Event('change'));
+            }
+            clearInterval(poll);
+          } else if (tries > 50) {
+            clearInterval(poll);
+          }
+        }, 300);
+      }
+    </script>
+  </body>
+</html>

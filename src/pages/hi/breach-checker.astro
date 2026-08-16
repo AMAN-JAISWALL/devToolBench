@@ -1,0 +1,426 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="मुफ़्त पासवर्ड ब्रीच चेकर — जानें आपका ईमेल हैक हुआ या नहीं"
+  description="मुफ़्त पासवर्ड ब्रीच चेकर: जानें कि आपका पासवर्ड ज्ञात डेटा ब्रीच में है या नहीं (लोकल हैशिंग, कभी बाहर नहीं भेजा जाता) और आपका ईमेल लीक हुआ या नहीं। लॉगिन की ज़रूरत नहीं।"
+  path="/breach-checker"
+  locale="hi"
+  keywords={[
+    'पासवर्ड ब्रीच चेकर',
+    'मेरा ईमेल हैक हुआ या नहीं चेक करें',
+    'मुफ़्त पासवर्ड ब्रीच चेकर',
+    'have i been pwned चेक',
+    'पासवर्ड लीक चेकर',
+    'ईमेल ब्रीच चेक',
+    'डेटा ब्रीच लुकअप',
+    'क्या मेरा पासवर्ड कंप्रोमाइज़्ड है',
+  ]}
+>
+  <section class="intro">
+    <h1>मुफ़्त पासवर्ड और ईमेल ब्रीच चेकर</h1>
+    <p>
+      जानें कि आपका पासवर्ड ज्ञात डेटा ब्रीच में आया है या नहीं और आपका ईमेल हैक या लीक हुआ है या
+      नहीं। दो जाँचें, दो अलग प्राइवेसी मॉडल — दोनों नीचे ईमानदारी से समझाए गए हैं।
+    </p>
+  </section>
+
+  <section class="tool" aria-labelledby="pw-heading">
+    <h2 id="pw-heading">1. पासवर्ड जाँच</h2>
+    <p class="privacy-note good">
+      आपका पासवर्ड आपके ब्राउज़र में ही हैश (SHA-1) होता है। केवल हैश के पहले 5 अक्षर ही आपके
+      डिवाइस से बाहर जाते हैं — पासवर्ड कभी नेटवर्क पर नहीं जाता।
+    </p>
+
+    <div class="live-hash" aria-live="polite">
+      <span class="label mono">SHA-1 (लाइव)</span>
+      <code id="live-hash" class="mono">&nbsp;</code>
+    </div>
+
+    <form id="pw-form">
+      <label class="field-label" for="pw-input">जाँचने के लिए पासवर्ड</label>
+      <div class="row">
+        <input id="pw-input" type="password" autocomplete="off" placeholder="पासवर्ड लिखें या पेस्ट करें…" required />
+        <button type="submit">पासवर्ड जाँचें</button>
+      </div>
+    </form>
+
+    <div id="pw-result" class="result" role="status" aria-live="polite"></div>
+
+    <details class="how">
+      <summary>यह कैसे काम करता है (k-anonymity)</summary>
+      <p>
+        सबमिट करने पर आपका ब्राउज़र Web Crypto API से पासवर्ड का SHA-1 हैश लोकली बनाता है। फिर
+        वह हैश के केवल पहले 5 अक्षर HaveIBeenPwned Pwned Passwords API को भेजता है, जो उसी
+        प्रीफ़िक्स वाले सभी लीक हैश-सफ़िक्स लौटा देता है। आपका ब्राउज़र बाकी हैश लोकली मैच करता
+        है। API को आपका पासवर्ड या पूरा हैश कभी पता नहीं चलता।
+      </p>
+    </details>
+  </section>
+
+  <section class="tool" aria-labelledby="email-heading">
+    <h2 id="email-heading">2. ईमेल जाँच</h2>
+    <p class="privacy-note warn">
+      पासवर्ड जाँच के विपरीत, आपका ईमेल पता यह जाँच चलाने के लिए HTTPS पर XposedOrNot API को
+      भेजा जाता है। यही इस जाँच का तरीका है — हम इसके बारे में साफ़-साफ़ बताते हैं।
+    </p>
+
+    <form id="email-form">
+      <label class="field-label" for="email-input">जाँचने के लिए ईमेल</label>
+      <div class="row">
+        <input id="email-input" type="email" autocomplete="off" placeholder="you@example.com" required />
+        <button type="submit">ईमेल जाँचें</button>
+      </div>
+    </form>
+
+    <div id="email-result" class="result" role="status" aria-live="polite"></div>
+
+    <p class="data-credit">
+      ब्रीच डेटा:
+      <a href="https://xposedornot.com" rel="noopener nofollow" target="_blank">XposedOrNot</a> (ईमेल जाँच) और
+      <a href="https://haveibeenpwned.com" rel="noopener nofollow" target="_blank">HaveIBeenPwned</a> (पासवर्ड जाँच)
+    </p>
+  </section>
+
+  <!-- Ad slot: in-content — paste your AdSense unit here after approval -->
+  <div class="ad-slot" data-ad-slot="in-content"></div>
+
+  <section class="explainer">
+    <h2>डेटा ब्रीच क्या है, और आपको क्यों फ़र्क पड़ता है?</h2>
+    <p>
+      डेटा ब्रीच तब होता है जब किसी सिस्टम से बिना अनुमति के जानकारी ले ली जाती है — आमतौर पर
+      किसी कंपनी का यूज़र डेटाबेस हैक होकर ऑनलाइन लीक कर दिया जाता है। पिछले दशक में ब्रीच में
+      अरबों खाते उजागर हुए हैं: ईमेल पते, पासवर्ड (अक्सर खराब तरीके से हैश या सादे टेक्स्ट में),
+      नाम, फ़ोन नंबर और कभी-कभी पेमेंट जानकारी भी। एक बार आपके क्रेडेंशियल ब्रीच में आ जाने पर
+      वे ऐसी सूचियों में जुड़ जाते हैं जिन्हें हमलावर क्रेडेंशियल स्टफ़िंग में इस्तेमाल करते हैं —
+      यानी आपका लीक हुआ ईमेल-पासवर्ड कॉम्बिनेशन सैकड़ों दूसरी साइटों पर अपने-आप आज़माया जाता है।
+    </p>
+    <p>
+      यह टूल आपकी एक्सपोज़र दो तरह से जाँचता है। <strong>पासवर्ड जाँच</strong> आपके पासवर्ड का
+      SHA-1 हैश HaveIBeenPwned Pwned Passwords के 60 करोड़ से ज़्यादा असली ब्रीच से एकत्र
+      पासवर्डों के संग्रह से तुलना करती है। <strong>ईमेल जाँच</strong> XposedOrNot से पूछती है
+      कि आपका ईमेल पता किन ज्ञात ब्रीच डेटाबेस में है, ताकि आप देख सकें कि किन सेवाओं ने आपका
+      डेटा लीक किया और उनके पासवर्ड सबसे पहले बदलें।
+    </p>
+    <p>
+      पासवर्ड जाँच k-anonymity नाम की प्राइवेसी तकनीक पर आधारित है: आपका ब्राउज़र पासवर्ड को हैश
+      करता है, उस हैश के केवल 5 अक्षरों का प्रीफ़िक्स भेजता है, और बाकी का मिलान API के जवाब के
+      विरुद्ध लोकली करता है। किसी भी प्रीफ़िक्स को हज़ारों हैश साझा करते हैं, इसलिए API यह नहीं
+      बता सकता कि आपने कौन-सा पासवर्ड जाँचा। आपका पासवर्ड आपके ब्राउज़र से बाहर नहीं जाता — यह
+      मार्केटिंग की बात नहीं है, कोड ऐसा ही काम करता है, और आप इसे अपने ब्राउज़र के नेटवर्क
+      टैब में खुद जाँच सकते हैं: आपको <code>api.pwnedpasswords.com/range/XXXXX</code> को एक
+      रिक्वेस्ट दिखेगी और आपका पासवर्ड कहीं नहीं।
+    </p>
+    <p>
+      एक ईमानदार बात: ये जाँचें केवल <em>ज्ञात</em> ब्रीच कवर करती हैं। "नहीं मिला" का मतलब है
+      कि आपका पासवर्ड या ईमेल इन APIs के सार्वजनिक डेटासेट में नहीं है — यह सुरक्षा की गारंटी
+      नहीं है। इस टूल का नतीजा जो भी हो, हर साइट के लिए अलग पासवर्ड और पासवर्ड मैनेजर इस्तेमाल
+      करें।
+    </p>
+
+    <h2>अक्सर पूछे जाने वाले प्रश्न</h2>
+    <div class="faq">
+      <details>
+        <summary>क्या यहाँ अपना असली पासवर्ड लिखना सुरक्षित है?</summary>
+        <p>
+          पासवर्ड कुछ भी भेजे जाने से पहले आपके ब्राउज़र में हैश (SHA-1) हो जाता है, और API को
+          केवल 5-अक्षरों का हैश प्रीफ़िक्स जाता है। API को सैकड़ों हैशों वाला एक प्रीफ़िक्स दिखता
+          है और वह सारे मैच लौटा देता है; आपका ब्राउज़र आपका वाला लोकली ढूँढता है। फिर भी सतर्क
+          रहना अच्छी आदत है — चाहें तो किसी नए पासवर्ड की जाँच करें, मास्टर पासवर्ड की नहीं।
+        </p>
+      </details>
+      <details>
+        <summary>"X ब्रीच में मिला" का असल में मतलब क्या है?</summary>
+        <p>
+          इसका मतलब है कि वह सटीक पासवर्ड HaveIBeenPwned के एकत्रित ब्रीच डेटाबेस में X बार
+          आया है। संख्या जितनी ज़्यादा होगी, पासवर्ड उतना ही ज़्यादा जाना-पहचाना है और हमलावरों
+          के ऑटोमेटेड हमलों में आज़माया जाने की संभावना उतनी ही ज़्यादा है। शून्य से ज़्यादा
+          कोई भी संख्या उस पासवर्ड को छोड़ने का कारण है।
+        </p>
+      </details>
+      <details>
+        <summary>ईमेल जाँच मेरा ईमेल सर्वर को क्यों भेजती है?</summary>
+        <p>
+          यह जानने के लिए कि आपका पता ब्रीच सूचियों में है या नहीं, उन सूचियों में खोजना पड़ता
+          है, और सटीक ईमेल लुकअप के लिए k-anonymity जैसा कोई तरीका उपलब्ध नहीं है। आपका पता
+          HTTPS पर XposedOrNot को जाता है, जो जाँच चलाता है। अगर यह ठीक नहीं लगता तो ईमेल जाँच
+          छोड़ दें।
+        </p>
+      </details>
+      <details>
+        <summary>मेरा ईमेल ऐसी सेवा में दिख रहा है जिसे मैंने कभी इस्तेमाल ही नहीं किया। कैसे?</summary>
+        <p>
+          ब्रीच डेटाबेस में अक्सर एग्रीगेटेड स्पैम लिस्ट, कॉम्बो लिस्ट या थर्ड-पार्टी लीक से
+          एकत्र ईमेल होते हैं, केवल उस सेवा के अपने रिकॉर्ड नहीं। आपका पता खाता बनाए बिना भी
+          सूची में आ सकता है। इसे इस बात का संकेत मानें कि पता घूम रहा है, और पासवर्ड दोबारा
+          इस्तेमाल न करें।
+        </p>
+      </details>
+      <details>
+        <summary>अगर मेरा ईमेल ब्रीच में मिला तो क्या करें?</summary>
+        <p>
+          सूची में आई हर सेवा (और जहाँ आपने वही पासवर्ड दोबारा इस्तेमाल किया हो) का पासवर्ड
+          बदलें, टू-फ़ैक्टर ऑथेंटिकेशन चालू करें, और पासवर्ड मैनेजर अपनाएँ ताकि हर खाते को अलग
+          पासवर्ड मिले। सबसे पहले ब्रीच हुई सेवाओं पर काम करें — वही ज्ञात एक्सपोज़र पॉइंट हैं।
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'hi',
+    mainEntity: [
+      { '@type': 'Question', name: 'क्या यहाँ अपना असली पासवर्ड लिखना सुरक्षित है?', acceptedAnswer: { '@type': 'Answer', text: 'पासवर्ड आपके ब्राउज़र में ही SHA-1 से हैश होता है और API को केवल 5-अक्षरों का हैश प्रीफ़िक्स जाता है। पूरा पासवर्ड आपके डिवाइस से बाहर नहीं जाता।' } },
+      { '@type': 'Question', name: '"X ब्रीच में मिला" का मतलब क्या है?', acceptedAnswer: { '@type': 'Answer', text: 'वह पासवर्ड HaveIBeenPwned के ब्रीच डेटाबेस में X बार आया है। शून्य से ज़्यादा कोई भी संख्या उस पासवर्ड को बदलने का संकेत है।' } },
+      { '@type': 'Question', name: 'ईमेल जाँच मेरा ईमेल क्यों भेजती है?', acceptedAnswer: { '@type': 'Answer', text: 'ब्रीच सूचियों में खोज के लिए आपका पता HTTPS पर XposedOrNot को भेजा जाता है — सटीक ईमेल लुकअप का यही एक तरीका है।' } },
+      { '@type': 'Question', name: 'मेरा ईमेल अनजानी सेवा में क्यों दिख रहा है?', acceptedAnswer: { '@type': 'Answer', text: 'ब्रीच डेटाबेस में अक्सर स्पैम लिस्ट और कॉम्बो लिस्ट से एकत्र पते होते हैं। इसे संकेत मानें कि पता घूम रहा है।' } },
+      { '@type': 'Question', name: 'ईमेल ब्रीच में मिला तो क्या करें?', acceptedAnswer: { '@type': 'Answer', text: 'सूची की हर सेवा का पासवर्ड बदलें, 2FA चालू करें और पासवर्ड मैनेजर इस्तेमाल करें।' } },
+    ],
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'पासवर्ड और ईमेल ब्रीच चेकर',
+    url: 'https://devtoolbench.dev/hi/breach-checker/',
+    applicationCategory: 'SecurityApplication',
+    operatingSystem: 'कोई भी (वेब ब्राउज़र)',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    inLanguage: 'hi',
+    description: 'मुफ़्त पासवर्ड ब्रीच चेकर और ईमेल ब्रीच लुकअप। पासवर्ड ब्राउज़र में लोकली हैश होता है; केवल 5-अक्षरों का हैश प्रीफ़िक्स भेजा जाता है (k-anonymity)।',
+  })} />
+
+  <aside class="related">
+    <h2>DevToolbench के और मुफ़्त टूल्स</h2>
+    <ul>
+      <li><a href="/hi/speed-test/">बल्क वेबसाइट स्पीड टेस्ट — एक साथ कई वेबसाइटें जाँचें</a></li>
+      <li><a href="/hi/fake-data-generator/">फेक डेटा जेनरेटर — मॉक JSON, CSV और SQL टेस्ट डेटा</a></li>
+    </ul>
+  </aside>
+
+  <script>
+    const MSG = {
+      hashing: 'लोकली हैश हो रहा है और जाँच हो रही है…',
+      found: (n: string) => `${n} ज्ञात ब्रीच प्रविष्टियों में मिला — यह पासवर्ड इस्तेमाल न करें।`,
+      notFound: 'ज्ञात ब्रीच डेटा में नहीं मिला। ध्यान दें: यह केवल ज्ञात, सार्वजनिक ब्रीच सूचियों को कवर करता है — यह सुरक्षा की गारंटी नहीं है।',
+      apiError: 'ब्रीच API से संपर्क नहीं हो सका। कुछ देर बाद फिर कोशिश करें।',
+      invalidEmail: 'कृपया मान्य ईमेल पता दर्ज करें।',
+      checking: 'ब्रीच डेटाबेस जाँचे जा रहे हैं…',
+      rateLimit: 'रेट लिमिट आ गई — मुफ़्त ब्रीच API लगभग 2 जाँच/सेकंड और 50–100 प्रति घंटा देता है। बटन 30 सेकंड में फिर चालू होगा; उसी ईमेल की दोबारा जाँच 10 मिनट तक तुरंत मिलती है।',
+      noBreaches: 'इस ईमेल पते के लिए कोई ज्ञात ब्रीच नहीं मिला।',
+      foundN: (n: number) => `${n} ज्ञात ब्रीच${n === 1 ? '' : 'ों'} में मिला:`,
+      advice: 'सूची की हर सेवा का पासवर्ड बदलें — और जहाँ दोबारा इस्तेमाल किया हो वहाँ भी — फिर टू-फ़ैक्टर ऑथेंटिकेशन चालू करें।',
+    };
+
+    // ---------- Feature 1: password check ----------
+    const pwForm = document.getElementById('pw-form') as HTMLFormElement;
+    const pwInput = document.getElementById('pw-input') as HTMLInputElement;
+    const pwResult = document.getElementById('pw-result')!;
+    const liveHashEl = document.getElementById('live-hash')!;
+
+    async function sha1Hex(text: string): Promise<string> {
+      const data = new TextEncoder().encode(text);
+      const digest = await crypto.subtle.digest('SHA-1', data);
+      return Array.from(new Uint8Array(digest))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('')
+        .toUpperCase();
+    }
+
+    let hashTimer: ReturnType<typeof setTimeout> | undefined;
+    pwInput.addEventListener('input', () => {
+      clearTimeout(hashTimer);
+      hashTimer = setTimeout(async () => {
+        liveHashEl.textContent = pwInput.value ? await sha1Hex(pwInput.value) : '\u00a0';
+      }, 80);
+    });
+
+    pwForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = pwInput.value;
+      if (!password) return;
+      pwResult.className = 'result info';
+      pwResult.textContent = MSG.hashing;
+      try {
+        const hash = await sha1Hex(password);
+        const prefix = hash.slice(0, 5);
+        const suffix = hash.slice(5);
+        const res = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`, {
+          headers: { 'Add-Padding': 'true' },
+        });
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        const body = await res.text();
+        let count = 0;
+        for (const line of body.split('\n')) {
+          const sep = line.indexOf(':');
+          if (sep === -1) continue;
+          if (line.slice(0, sep).trim() === suffix) {
+            count = parseInt(line.slice(sep + 1).trim(), 10) || 0;
+            break;
+          }
+        }
+        if (count > 0) {
+          pwResult.className = 'result bad';
+          pwResult.textContent = MSG.found(count.toLocaleString('en-IN'));
+        } else {
+          pwResult.className = 'result good';
+          pwResult.textContent = MSG.notFound;
+        }
+      } catch {
+        pwResult.className = 'result info';
+        pwResult.textContent = MSG.apiError;
+      }
+    });
+
+    // ---------- Feature 2: email check ----------
+    const emailForm = document.getElementById('email-form') as HTMLFormElement;
+    const emailInput = document.getElementById('email-input') as HTMLInputElement;
+    const emailResult = document.getElementById('email-result')!;
+    const emailBtn = emailForm.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    // XposedOrNot मुफ़्त टियर: ~2 req/s, 50–100/घंटा प्रति क्लाइंट।
+    let emailBusy = false;
+    const CACHE_TTL = 10 * 60 * 1000;
+    function cacheGet(email: string): { cls: string; html: string } | null {
+      try {
+        const raw = sessionStorage.getItem(`xon-${email}`);
+        if (!raw) return null;
+        const { t, cls, html } = JSON.parse(raw);
+        return Date.now() - t < CACHE_TTL ? { cls, html } : null;
+      } catch { return null; }
+    }
+    function cacheSet(email: string, cls: string, html: string): void {
+      try { sessionStorage.setItem(`xon-${email}`, JSON.stringify({ t: Date.now(), cls, html })); } catch { /* private mode */ }
+    }
+    function startCooldown(seconds: number): void {
+      let left = seconds;
+      emailBtn.disabled = true;
+      const original = emailBtn.textContent;
+      const iv = setInterval(() => {
+        left--;
+        if (left <= 0) {
+          clearInterval(iv);
+          emailBtn.disabled = false;
+          emailBtn.textContent = original;
+        } else {
+          emailBtn.textContent = `${left}s में दोबारा`;
+        }
+      }, 1000);
+    }
+
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (emailBusy || emailBtn.disabled) return;
+      const email = emailInput.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailResult.className = 'result info';
+        emailResult.textContent = MSG.invalidEmail;
+        return;
+      }
+      const cached = cacheGet(email);
+      if (cached) {
+        emailResult.className = cached.cls;
+        emailResult.innerHTML = cached.html;
+        return;
+      }
+      emailBusy = true;
+      emailBtn.disabled = true;
+      emailResult.className = 'result info';
+      emailResult.textContent = MSG.checking;
+      try {
+        const res = await fetch(`https://api.xposedornot.com/v1/check-email/${encodeURIComponent(email)}`);
+        if (res.status === 429) {
+          emailResult.className = 'result info';
+          emailResult.textContent = MSG.rateLimit;
+          startCooldown(30);
+          return;
+        }
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        const data = await res.json();
+        if (data?.Error || !data?.breaches) {
+          emailResult.className = 'result good';
+          emailResult.innerHTML = MSG.noBreaches;
+          cacheSet(email, 'result good', emailResult.innerHTML);
+          return;
+        }
+        const names: string[] = Array.isArray(data.breaches?.[0]) ? data.breaches[0] : data.breaches;
+        if (!Array.isArray(names) || names.length === 0) {
+          emailResult.className = 'result good';
+          emailResult.innerHTML = MSG.noBreaches;
+          cacheSet(email, 'result good', emailResult.innerHTML);
+          return;
+        }
+        emailResult.className = 'result bad';
+        emailResult.innerHTML = `
+          <p><strong>${MSG.foundN(names.length)}</strong></p>
+          <ul>${names.map((n) => `<li class="mono">${escapeHtml(String(n))}</li>`).join('')}</ul>
+          <p class="advice">${MSG.advice}</p>
+        `;
+        cacheSet(email, 'result bad', emailResult.innerHTML);
+      } catch {
+        emailResult.className = 'result info';
+        emailResult.textContent = MSG.apiError;
+      } finally {
+        emailBusy = false;
+        if (!emailBtn.textContent?.includes('दोबारा')) emailBtn.disabled = false;
+      }
+    });
+
+    function escapeHtml(s: string): string {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+  </script>
+
+  <style>
+    .intro { padding: 2rem 0 0.5rem; }
+    .intro h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .intro p { color: var(--text-dim); max-width: 44rem; margin: 0; }
+    .tool { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0; }
+    .tool h2 { margin: 0 0 0.75rem; font-size: 1.25rem; }
+    .privacy-note { font-size: 0.875rem; border-radius: 6px; padding: 0.625rem 0.875rem; margin: 0 0 1rem; }
+    .privacy-note.good { color: var(--good); background: rgba(45, 212, 191, 0.08); }
+    .privacy-note.warn { color: var(--warn); background: rgba(251, 191, 36, 0.08); }
+    .live-hash { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1rem; padding: 0.625rem 0.875rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; }
+    .live-hash .label { font-size: 0.6875rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+    .live-hash code { font-size: 0.8125rem; word-break: break-all; color: var(--good); min-height: 1.2em; }
+    .field-label { display: block; font-size: 0.875rem; margin-bottom: 0.375rem; color: var(--text-dim); }
+    .row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .row input { flex: 1 1 14rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; padding: 0.625rem 0.875rem; color: var(--text); font-family: var(--mono); font-size: 0.9375rem; }
+    .row button { background: var(--good); color: #04211d; border: none; border-radius: 6px; padding: 0.625rem 1.25rem; font-weight: 600; font-size: 0.9375rem; cursor: pointer; }
+    .row button:hover { filter: brightness(1.1); }
+    .result { margin-top: 1rem; border-radius: 6px; padding: 0.75rem 1rem; font-size: 0.9375rem; }
+    .result:empty { display: none; }
+    .result.good { color: var(--good); background: rgba(45, 212, 191, 0.08); }
+    .result.bad { color: var(--bad); background: rgba(248, 113, 113, 0.08); }
+    .result.info { color: var(--text-dim); background: var(--bg-input); }
+    .result ul { margin: 0.5rem 0; padding-left: 1.25rem; }
+    .result .advice { color: var(--warn); margin-bottom: 0; font-size: 0.875rem; }
+    details { margin-top: 1rem; }
+    details summary { cursor: pointer; color: var(--text-dim); font-size: 0.875rem; }
+    details p { color: var(--text-dim); font-size: 0.875rem; }
+    .data-credit {
+      margin: 1rem 0 0;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      opacity: 0.75;
+      border-top: 1px solid var(--border);
+      padding-top: 0.75rem;
+    }
+    .explainer { max-width: 46rem; padding: 1rem 0 2rem; }
+    .explainer h2 { font-size: 1.25rem; margin-top: 2rem; }
+    .explainer p, .faq p { color: var(--text-dim); font-size: 0.9375rem; }
+    .explainer code { color: var(--good); font-size: 0.875em; }
+    .faq details { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.5rem; }
+    .faq summary { font-weight: 600; }
+    .faq summary::marker { color: var(--good); }
+    .related { max-width: 46rem; margin: 0 0 2rem; padding: 1rem 1.25rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px; }
+    .related h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+    .related ul { margin: 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .related li { margin: 0.25rem 0; }
+  </style>
+</Layout>
