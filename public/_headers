@@ -1,5 +1,15 @@
+# Security headers for all hosts
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: SAMEORIGIN
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Keep search indexes on the production domain only: the pages.dev host and
+# per-deployment preview URLs get X-Robots-Tag noindex (full-URL patterns are
+# supported by Cloudflare Pages), while devtoolbench.dev stays indexable.
+https://devtoolbench.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
+
+https://*.devtoolbench.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
